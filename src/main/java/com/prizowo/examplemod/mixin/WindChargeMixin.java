@@ -23,7 +23,6 @@ public class WindChargeMixin {
         WindCharge thisAs = (WindCharge) (Object) this;
         Level level = thisAs.level();
 
-        // 创建增强的爆炸效果
         level.explode(thisAs, null, null,
                 pos.x(), pos.y(), pos.z(), 5.0F, false,
                 ExplosionInteraction.NONE,
@@ -31,10 +30,8 @@ public class WindChargeMixin {
                 SoundEvents.GENERIC_EXPLODE
         );
 
-        // 取消原版方法的执行
         ci.cancel();
 
-        // 应用额外的击退效果
         exampleMod$applyKnockback(thisAs, pos);
     }
 
@@ -47,7 +44,7 @@ public class WindChargeMixin {
             if (entity != windCharge.getOwner()) {
                 Vec3 direction = entity.position().subtract(pos).normalize();
 
-                double verticalForce = 5.0; // 调整这个值来改变击飞高度
+                double verticalForce = 5.0;
                 double horizontalForce = 1.5;
 
                 Vec3 currentMotion = entity.getDeltaMovement();

@@ -27,7 +27,7 @@ public class PlayerThornsEffectMixin {
         }
 
         exampleMod$thornsDamageCounter++;
-        if (exampleMod$thornsDamageCounter >= 20) { // 每秒检查一次（20 ticks = 1 秒）
+        if (exampleMod$thornsDamageCounter >= 20) {
             exampleMod$thornsDamageCounter = 0;
 
             ItemStack mainHandItem = player.getMainHandItem();

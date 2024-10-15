@@ -38,7 +38,6 @@ public abstract class PistonMovingBlockEntityMixin {
     @Inject(method = "finalTick", at = @At("HEAD"), cancellable = true)
     private void onFinalTick(CallbackInfo ci) {
         if (this.movedState.is(Blocks.BEDROCK)) {
-            // 对于基岩，我们需要特殊处理
             Level level = this.exampleMod$getLevel();
             BlockPos pos = this.exampleMod$getBlockPos();
             if (level != null) {
@@ -49,7 +48,7 @@ public abstract class PistonMovingBlockEntityMixin {
                 }
                 level.removeBlockEntity(pos);
             }
-            ci.cancel(); // 取消原有的finalTick逻辑
+            ci.cancel();
         }
     }
 }
