@@ -1,0 +1,4 @@
+// 1.21.1	2024-10-14T23:37:38.6916912	Loot Tables
+5f918a2f4ab5caa86fba8b5cb3f9235062546f36 data/examplemod/loot_table/blocks/crafting_table_slab.json
+1345e612b6c31ef7b675d3f93029d37e32048bad data/examplemod/loot_table/blocks/customblock.json
+b2a45f2e688e1171511d944d02ce306b94b9fd39 data/examplemod/loot_table/blocks/customblock2.json

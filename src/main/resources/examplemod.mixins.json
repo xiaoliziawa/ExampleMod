@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.prizowo.examplemod.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "examplemod.refmap.json",
+  "mixins": [
+    "EnderManMixin",
+    "EnderpearlItemMixin",
+    "IronGolemMixin",
+    "ItemMixin",
+    "MaceMixin",
+    "PistonBaseBlockMixin",
+    "PistonMovingBlockEntityMixin",
+    "PlayerMixin",
+    "PlayerThornsEffectMixin",
+    "TridentEntityMixin",
+    "TridentItemMixin",
+    "WindChargeItemMixin",
+    "WindChargeMixin",
+    "ZombieMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
