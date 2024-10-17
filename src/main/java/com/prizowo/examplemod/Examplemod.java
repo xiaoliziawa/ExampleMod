@@ -1,6 +1,7 @@
 package com.prizowo.examplemod;
 
 import com.prizowo.examplemod.Reg.*;
+import com.prizowo.examplemod.custom.CustomEgg;
 import com.prizowo.examplemod.custom.MyCustomEntity;
 import com.prizowo.examplemod.enchant.TFEnchantmentEffects;
 import com.prizowo.examplemod.enchant.TFMobEffects;
@@ -12,15 +13,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrownEgg;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
@@ -52,6 +56,20 @@ public class Examplemod {
     public static ResourceLocation prefix(String name) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, name.toLowerCase(Locale.ROOT));
     }
+    @SubscribeEvent
+    public void onProjectileImpact(ProjectileImpactEvent event) {
+        if (event.getProjectile() instanceof ThrownEgg) {
+            event.setCanceled(true);
+            Level level = event.getProjectile().level();
+            if (!level.isClientSide()) {
+                CustomEgg customEgg = new CustomEgg(EntityReg.CUSTOM_EGG.get(), level);
+                customEgg.setPos(event.getProjectile().getX(), event.getProjectile().getY(), event.getProjectile().getZ());
+                customEgg.setDeltaMovement(event.getProjectile().getDeltaMovement());
+                level.addFreshEntity(customEgg);
+            }
+            event.getProjectile().discard();
+        }
+    }
 
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinLevelEvent event) {
@@ -79,3 +97,4 @@ public class Examplemod {
         }
     }
 }
+

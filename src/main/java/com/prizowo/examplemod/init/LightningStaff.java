@@ -31,7 +31,7 @@ public class LightningStaff {
                                 lightning.moveTo(entity.getX(), entity.getY(), entity.getZ());
                                 lightning.setVisualOnly(false);
                                 level.addFreshEntity(lightning);
-                                entity.hurt(level.damageSources().lightningBolt(), 50f);
+                                entity.hurt(level.damageSources().lightningBolt(), 500f);
                                 player.swing(InteractionHand.MAIN_HAND);
                             }
                         });

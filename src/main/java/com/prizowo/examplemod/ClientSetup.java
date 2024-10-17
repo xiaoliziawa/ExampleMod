@@ -4,6 +4,7 @@ import com.prizowo.examplemod.Reg.EntityReg;
 import com.prizowo.examplemod.custom.MyHumanoidEntityRenderer;
 import com.prizowo.examplemod.custom.MyHumanoidModel;
 import com.prizowo.examplemod.custom.MyModelLayers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -20,4 +21,9 @@ public class ClientSetup {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityReg.MY_HUMANOID.get(), MyHumanoidEntityRenderer::new);
     }
+    @SubscribeEvent
+    public static void eggRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(EntityReg.CUSTOM_EGG.get(), ThrownItemRenderer::new);
+    }
+
 }
