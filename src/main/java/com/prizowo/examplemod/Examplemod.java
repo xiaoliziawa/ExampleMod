@@ -2,6 +2,7 @@ package com.prizowo.examplemod;
 
 import com.prizowo.examplemod.Reg.*;
 import com.prizowo.examplemod.custom.CustomEgg;
+import com.prizowo.examplemod.custom.CustomSnowGolem;
 import com.prizowo.examplemod.custom.MyCustomEntity;
 import com.prizowo.examplemod.enchant.TFEnchantmentEffects;
 import com.prizowo.examplemod.enchant.TFMobEffects;
@@ -51,6 +52,7 @@ public class Examplemod {
 
     private void addEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(EntityReg.MY_HUMANOID.get(), MyCustomEntity.createAttributes().build());
+        event.put(EntityReg.CUSTOM_SNOW_GOLEM.get(), CustomSnowGolem.createAttributes().build());
     }
 
     public static ResourceLocation prefix(String name) {
@@ -96,5 +98,6 @@ public class Examplemod {
             }
         }
     }
+
 }
 

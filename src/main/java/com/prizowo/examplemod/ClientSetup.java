@@ -1,6 +1,7 @@
 package com.prizowo.examplemod;
 
 import com.prizowo.examplemod.Reg.EntityReg;
+import com.prizowo.examplemod.custom.CustomSnowGolemRenderer;
 import com.prizowo.examplemod.custom.MyHumanoidEntityRenderer;
 import com.prizowo.examplemod.custom.MyHumanoidModel;
 import com.prizowo.examplemod.custom.MyModelLayers;
@@ -25,5 +26,12 @@ public class ClientSetup {
     public static void eggRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityReg.CUSTOM_EGG.get(), ThrownItemRenderer::new);
     }
-
+    @SubscribeEvent
+    public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(EntityReg.CUSTOM_SNOWBALL.get(), ThrownItemRenderer::new);
+    }
+    @SubscribeEvent
+    public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(EntityReg.CUSTOM_SNOW_GOLEM.get(), CustomSnowGolemRenderer::new);
+    }
 }

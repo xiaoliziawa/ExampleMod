@@ -5,6 +5,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.CraftingMenu;
+import org.jetbrains.annotations.NotNull;
 
 public class CustomCraftingMenu extends CraftingMenu {
     private final ContainerLevelAccess access;
@@ -15,7 +16,7 @@ public class CustomCraftingMenu extends CraftingMenu {
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return stillValid(this.access, player, BlocksReg.CRFTING_TABLE_SLAB.get());
     }
 }

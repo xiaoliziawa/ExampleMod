@@ -14,6 +14,7 @@
     "PistonMovingBlockEntityMixin",
     "PlayerMixin",
     "PlayerThornsEffectMixin",
+    "SnowballItemMixin",
     "TridentEntityMixin",
     "TridentItemMixin",
     "WindChargeItemMixin",

@@ -6,13 +6,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.core.BlockPos;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +23,12 @@ public class CustomEgg extends ThrowableItemProjectile {
     }
 
     @Override
-    protected Item getDefaultItem() {
+    protected @NotNull Item getDefaultItem() {
         return Items.EGG;
     }
 
     @Override
-    protected void onHit(HitResult result) {
+    protected void onHit(@NotNull HitResult result) {
         super.onHit(result);
 
         if (!this.level().isClientSide) {
@@ -37,7 +37,6 @@ public class CustomEgg extends ThrowableItemProjectile {
 
             List<EntityType<?>> allEntities = new ArrayList<>();
 
-            // 添加所有注册的实体类型
             for (EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
                 allEntities.add(entityType);
             }

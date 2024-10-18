@@ -1,10 +1,10 @@
 {
 	"textures": {
-		"0": "block/crafting_table_slab_side",
-		"1": "block/crafting_table_slab_top",
-		"2": "block/crafting_table_slab_front",
-		"3": "block/crafting_table_slab_bottom",
-		"particle": "block/crafting_table_slab_side"
+		"0": "examplemod:block/crafting_table_slab_side",
+		"1": "examplemod:block/crafting_table_slab_top",
+		"2": "examplemod:block/crafting_table_slab_front",
+		"3": "examplemod:block/crafting_table_slab_bottom",
+		"particle": "examplemod:block/crafting_table_slab_side"
 	},
 	"elements": [
 		{

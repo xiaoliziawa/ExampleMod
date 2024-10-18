@@ -18,6 +18,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         blockWithItem(BlocksReg.CUSTOM_BLOCK);
+        blockWithItem(BlocksReg.CRFTING_TABLE_SLAB);
     }
     private void blockWithItem(Supplier<Block> deferredBlock ) {
         simpleBlockWithItem(deferredBlock.get(), cubeAll(deferredBlock.get()));

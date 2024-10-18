@@ -1,5 +1,6 @@
 package com.prizowo.examplemod.Reg;
 
+import com.prizowo.examplemod.custom.CustomSnowGolemSpawnEggItem;
 import com.prizowo.examplemod.init.CustomEgg;
 import com.prizowo.examplemod.Examplemod;
 import com.prizowo.examplemod.init.MyCustomItem;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,6 +33,9 @@ public class ItemReg {
     public static final Supplier<Item> CRAFTING_TABLE_SLAB_ITEM = ITEMS.register("crafting_table_slab",
             () -> new BlockItem(BlocksReg.CRFTING_TABLE_SLAB.get(), new Item.Properties()));
 
+    public static final Supplier<Item> CUSTOM_SNOW_GOLEM_SPAWN_EGG = ITEMS.register("custom_snow_golem_spawn_egg",
+            () -> new CustomSnowGolemSpawnEggItem(0xF0F0F0, 0xCC8E35,
+                    new Item.Properties()));
     public static final Supplier<Item> MY_HUMANOID_SPAWN_EGG = ITEMS.register("my_humanoid_spawn_egg",
             () -> new Item(new Item.Properties()) {
                 @Override
