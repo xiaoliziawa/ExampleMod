@@ -1,5 +1,8 @@
 {
   "itemGroup.examplemod.creative": "Example Mod Tab",
   "block.examplemod.customblock": "Custom Block",
-  "item.examplemod.customblock2": "Custom Block 2"
+  "item.examplemod.customblock2": "Custom Block 2",
+  "item.examplemod.music_card": "Music Card",
+  "item.examplemod.music_card.desc": "春日影",
+  "jukebox_song.examplemod.custom_song" : "春日影"
 }

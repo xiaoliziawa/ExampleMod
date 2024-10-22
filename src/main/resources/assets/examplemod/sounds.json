@@ -1,0 +1,10 @@
+{
+  "music_disc.custom_song": {
+    "sounds": [
+      {
+        "name": "examplemod:music_disc/custom_song",
+        "stream": true
+      }
+    ]
+  }
+}

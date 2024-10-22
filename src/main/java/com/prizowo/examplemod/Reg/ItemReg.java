@@ -1,6 +1,6 @@
 package com.prizowo.examplemod.Reg;
 
-import com.prizowo.examplemod.custom.CustomSnowGolemSpawnEggItem;
+import com.prizowo.examplemod.custom.customentity.CustomSnowGolemSpawnEggItem;
 import com.prizowo.examplemod.init.CustomEgg;
 import com.prizowo.examplemod.Examplemod;
 import com.prizowo.examplemod.init.MyCustomItem;
@@ -14,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 

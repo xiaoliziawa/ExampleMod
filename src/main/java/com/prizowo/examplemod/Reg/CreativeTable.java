@@ -1,6 +1,7 @@
 package com.prizowo.examplemod.Reg;
 
 import com.prizowo.examplemod.Examplemod;
+import com.prizowo.examplemod.Reg.music.JukeboxSongsReg;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -27,6 +28,8 @@ public class CreativeTable {
                             Item blockItem = block.get().asItem();
                             output.accept(new ItemStack(blockItem));
                         });
+                        JukeboxSongsReg.ITEMS.getEntries().forEach(item ->
+                                output.accept(new ItemStack(item.get())));
                     })
                     .build()
     );

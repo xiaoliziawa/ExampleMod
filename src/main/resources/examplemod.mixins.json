@@ -5,23 +5,29 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "examplemod.refmap.json",
   "mixins": [
-    "EnderManMixin",
     "EnderpearlItemMixin",
-    "IronGolemMixin",
     "ItemMixin",
     "MaceMixin",
     "PistonBaseBlockMixin",
     "PistonMovingBlockEntityMixin",
-    "PlayerMixin",
     "PlayerThornsEffectMixin",
     "SnowballItemMixin",
-    "TridentEntityMixin",
     "TridentItemMixin",
     "WindChargeItemMixin",
-    "WindChargeMixin",
-    "ZombieMixin"
+    "entities.EnderManMixin",
+    "entities.IronGolemMixin",
+    "entities.PlayerMixin",
+    "entities.ThrownEnderpearlMixin",
+    "entities.TridentEntityMixin",
+    "entities.WindChargeMixin",
+    "entities.ZombieMixin",
+    "maxstack.ContainerMixin",
+    "maxstack.DataComponentsMixin",
+    "maxstack.ItemMixin2",
+    "maxstack.ItemStackMixin"
   ],
   "client": [
+    "maxstack.GuiGraphicsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

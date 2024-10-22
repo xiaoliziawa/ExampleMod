@@ -23,10 +23,11 @@ public class PlayerThornsEffectMixin {
         Player player = (Player)(Object)this;
 
         if (player.level().isClientSide) {
-            return; // 只在服务器端执行
+            return;
         }
 
         exampleMod$thornsDamageCounter++;
+
         if (exampleMod$thornsDamageCounter >= 20) {
             exampleMod$thornsDamageCounter = 0;
 

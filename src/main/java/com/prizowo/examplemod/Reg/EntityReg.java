@@ -2,9 +2,9 @@ package com.prizowo.examplemod.Reg;
 
 import com.prizowo.examplemod.Examplemod;
 import com.prizowo.examplemod.custom.CustomEgg;
-import com.prizowo.examplemod.custom.CustomSnowGolem;
+import com.prizowo.examplemod.custom.customentity.CustomSnowGolem;
 import com.prizowo.examplemod.custom.CustomSnowball;
-import com.prizowo.examplemod.custom.MyCustomEntity;
+import com.prizowo.examplemod.custom.customentity.MyCustomEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
