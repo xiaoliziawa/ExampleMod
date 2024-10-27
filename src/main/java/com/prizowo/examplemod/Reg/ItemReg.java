@@ -4,6 +4,7 @@ import com.prizowo.examplemod.custom.customentity.CustomSnowGolemSpawnEggItem;
 import com.prizowo.examplemod.init.CustomEgg;
 import com.prizowo.examplemod.Examplemod;
 import com.prizowo.examplemod.init.MyCustomItem;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,6 +22,7 @@ import java.util.function.Supplier;
 
 public class ItemReg {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, Examplemod.MOD_ID);
+
     public static final Supplier<Item> CUSTOM_ITEM = ITEMS.register("customitem",
             () -> new MyCustomItem(new Item.Properties()));
     public static final Supplier<Item> CUSTOM_ITEM_1 = ITEMS.register("customitem1",
@@ -54,7 +56,8 @@ public class ItemReg {
                     }
                     return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
                 }
-            });
+     });
+
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);
     }

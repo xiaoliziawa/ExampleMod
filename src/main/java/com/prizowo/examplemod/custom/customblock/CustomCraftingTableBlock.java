@@ -1,5 +1,6 @@
-package com.prizowo.examplemod.custom;
+package com.prizowo.examplemod.custom.customblock;
 
+import com.prizowo.examplemod.custom.CustomCraftingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;

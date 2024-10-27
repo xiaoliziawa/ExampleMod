@@ -1,0 +1,42 @@
+package com.prizowo.examplemod.network;
+
+import com.prizowo.examplemod.Examplemod;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
+public record SyncVirtualItemPacket(BlockPos pos, ItemStack stack, boolean remove) implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<SyncVirtualItemPacket> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Examplemod.MOD_ID, "sync_virtual_item"));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, SyncVirtualItemPacket> STREAM_CODEC = new StreamCodec<>() {
+        @Override
+        public @NotNull SyncVirtualItemPacket decode(@NotNull RegistryFriendlyByteBuf buf) {
+            BlockPos pos = BlockPos.STREAM_CODEC.decode(buf);
+            ItemStack stack = ItemStack.OPTIONAL_STREAM_CODEC.decode(buf);
+            boolean remove = buf.readBoolean();
+            return new SyncVirtualItemPacket(pos, stack, remove);
+        }
+
+        @Override
+        public void encode(@NotNull RegistryFriendlyByteBuf buf, @NotNull SyncVirtualItemPacket packet) {
+            try {
+                BlockPos.STREAM_CODEC.encode(buf, packet.pos);
+                ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, packet.stack);
+                buf.writeBoolean(packet.remove);
+            } catch (Exception e) {
+                ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, ItemStack.EMPTY);
+                buf.writeBoolean(packet.remove);
+            }
+        }
+    };
+
+    @Override
+    public CustomPacketPayload.@NotNull Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
+}
+

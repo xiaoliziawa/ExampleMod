@@ -1,7 +1,7 @@
 package com.prizowo.examplemod.Reg;
 
 import com.prizowo.examplemod.Examplemod;
-import com.prizowo.examplemod.custom.CustomCraftingTableBlock;
+import com.prizowo.examplemod.custom.customblock.CustomCraftingTableBlock;
 import com.prizowo.examplemod.init.MyCustomFurnaceBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;

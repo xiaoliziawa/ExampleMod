@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 public class CreativeTable {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Examplemod.MOD_ID);
 
-    public static final Supplier<CreativeModeTab> CREATIVE_TABLE = CREATIVE_MODE_TABS.register("your_tab", () ->
+    public static final Supplier<CreativeModeTab> CREATIVE_TABLE = CREATIVE_MODE_TABS.register("example_tab", () ->
             CreativeModeTab.builder()
                     .icon(() -> new ItemStack(ItemReg.CUSTOM_ITEM.get()))
                     .title(Component.translatable("itemGroup." + Examplemod.MOD_ID + ".creative"))

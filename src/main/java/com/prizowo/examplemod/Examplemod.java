@@ -8,6 +8,8 @@ import com.prizowo.examplemod.custom.customentity.MyCustomEntity;
 import com.prizowo.examplemod.enchant.TFEnchantmentEffects;
 import com.prizowo.examplemod.enchant.TFMobEffects;
 import com.prizowo.examplemod.init.LightningStaff;
+import com.prizowo.examplemod.network.NetworkHandler;
+import com.prizowo.examplemod.render.EntityOverlayRenderer;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -44,8 +46,8 @@ public class Examplemod {
     public static final String MOD_ID = "examplemod";
     public static final int ABSOLUTE_MAXIMUM_STACK_SIZE = 1073741823;
 
-
     public Examplemod(IEventBus modEventBus, ModContainer modContainer) {
+        // 注册各种内容
         ItemReg.register(modEventBus);
         BlocksReg.register(modEventBus);
         BlockEntities.BLOCK_ENTITIES.register(modEventBus);
@@ -56,11 +58,22 @@ public class Examplemod {
         JukeboxSongsReg.SOUND_EVENTS.register(modEventBus);
         JukeboxSongsReg.JUKEBOX_SONGS.register(modEventBus);
         CreativeTable.CREATIVE_MODE_TABS.register(modEventBus);
+
+        // 添加事件监听器
         modEventBus.addListener(this::addEntityAttributes);
-        modContainer.registerConfig(ModConfig.Type.COMMON,Config.SPEC);
-        NeoForge.EVENT_BUS.register(new LightningStaff());
+
+        // 注册配置
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        // 注册事件监听器
         NeoForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(new LightningStaff());
+        NeoForge.EVENT_BUS.register(new EntityOverlayRenderer());
+
+        // 注册网络处理器
+        modEventBus.register(NetworkHandler.class);
     }
+
 
     private void addEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(EntityReg.MY_HUMANOID.get(), MyCustomEntity.createAttributes().build());
@@ -70,6 +83,7 @@ public class Examplemod {
     public static ResourceLocation prefix(String name) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, name.toLowerCase(Locale.ROOT));
     }
+
     @SubscribeEvent
     public void onProjectileImpact(ProjectileImpactEvent event) {
         if (event.getProjectile() instanceof ThrownEgg) {
@@ -110,27 +124,22 @@ public class Examplemod {
             }
         }
     }
+
+
     @EventBusSubscriber(modid = Examplemod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
     public static class CommonModEvents {
         @SubscribeEvent(priority = EventPriority.LOWEST)
         public static void onModifyDefaultComponentsEvent(ModifyDefaultComponentsEvent event) {
-            event.getAllItems().filter(item -> {
-                return item.getDefaultMaxStackSize() > 1;
-            }).forEach(item2 -> {
+            event.getAllItems().filter(item -> item.getDefaultMaxStackSize() > 1).forEach(item2 -> {
                 int newDefaultMaxStackSize;
                 if (Config.respectSmallStackSizes) {
-                    newDefaultMaxStackSize = Math.clamp(((long) item2.getDefaultMaxStackSize() * Config.defaultStackSize) / 64, 1, 1073741823);
+                    newDefaultMaxStackSize = Math.clamp(((long) item2.getDefaultMaxStackSize() * Config.defaultStackSize) / 64, 1, ABSOLUTE_MAXIMUM_STACK_SIZE);
                 } else {
                     newDefaultMaxStackSize = Config.defaultStackSize;
                 }
                 int i = newDefaultMaxStackSize;
-                event.modify(item2, builder -> {
-                    builder.set(DataComponents.MAX_STACK_SIZE, Integer.valueOf(i));
-                });
+                event.modify(item2, builder -> builder.set(DataComponents.MAX_STACK_SIZE, i));
             });
         }
     }
-
-
 }
-
