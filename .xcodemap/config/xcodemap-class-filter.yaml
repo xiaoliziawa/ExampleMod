@@ -1,8 +1,0 @@
-autoDetectedPackages:
-- com.prizowo.examplemod
-enableAutoDetect: true
-ignoreSameClassCall: null
-ignoreSamePackageCall: null
-includedPackagePrefixes: []
-includedParentClasses: []
-name: xcodemap-filter
