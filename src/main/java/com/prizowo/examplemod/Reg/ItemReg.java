@@ -58,6 +58,9 @@ public class ItemReg {
                 }
      });
 
+    public static final Supplier<Item> CUSTOM_CHEST_ITEM = ITEMS.register("custom_chest",
+            () -> new BlockItem(BlocksReg.CUSTOM_CHEST.get(), new Item.Properties()));
+
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);
     }

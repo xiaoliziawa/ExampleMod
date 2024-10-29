@@ -8,6 +8,7 @@ import com.prizowo.examplemod.custom.customentity.MyCustomEntity;
 import com.prizowo.examplemod.enchant.TFEnchantmentEffects;
 import com.prizowo.examplemod.enchant.TFMobEffects;
 import com.prizowo.examplemod.init.LightningStaff;
+import com.prizowo.examplemod.network.NetworkHandler;
 import com.prizowo.examplemod.render.EntityOutlineRenderer;
 import com.prizowo.examplemod.render.EntityOverlayRenderer;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -37,6 +38,8 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -45,6 +48,7 @@ import java.util.Objects;
 public class Examplemod {
     public static final String MOD_ID = "examplemod";
     public static final int ABSOLUTE_MAXIMUM_STACK_SIZE = 1073741823;
+    public static final Logger LOGGER = LogManager.getLogger(Examplemod.class);
 
     public Examplemod(ModContainer modContainer, IEventBus modEventBus) {
 
@@ -72,7 +76,7 @@ public class Examplemod {
         NeoForge.EVENT_BUS.register(new EntityOverlayRenderer());
         NeoForge.EVENT_BUS.register(new EntityOutlineRenderer());
         // 注册网络处理器
-//        modEventBus.register(NetworkHandler.class);
+        modEventBus.register(NetworkHandler.class);
 
 
     }

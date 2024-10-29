@@ -1,6 +1,7 @@
 package com.prizowo.examplemod.Reg;
 
 import com.prizowo.examplemod.Examplemod;
+import com.prizowo.examplemod.custom.CustomChestBlock;
 import com.prizowo.examplemod.custom.customblock.CustomCraftingTableBlock;
 import com.prizowo.examplemod.init.MyCustomFurnaceBlock;
 import net.minecraft.core.registries.Registries;
@@ -26,6 +27,13 @@ public class BlocksReg {
             ()-> new CustomCraftingTableBlock(Block.Properties.of()
                     .strength(3)
                     .sound(SoundType.WOOD)));
+
+    public static final Supplier<Block> CUSTOM_CHEST = BLOCKS.register("custom_chest",
+            () -> new CustomChestBlock(Block.Properties.of()
+                    .strength(2.5F)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()));
+
     public static void register(IEventBus eventBus)
     {
         BLOCKS.register(eventBus);
