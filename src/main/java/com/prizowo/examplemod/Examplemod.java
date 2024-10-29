@@ -8,7 +8,7 @@ import com.prizowo.examplemod.custom.customentity.MyCustomEntity;
 import com.prizowo.examplemod.enchant.TFEnchantmentEffects;
 import com.prizowo.examplemod.enchant.TFMobEffects;
 import com.prizowo.examplemod.init.LightningStaff;
-import com.prizowo.examplemod.network.NetworkHandler;
+import com.prizowo.examplemod.render.EntityOutlineRenderer;
 import com.prizowo.examplemod.render.EntityOverlayRenderer;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Holder;
@@ -46,7 +46,8 @@ public class Examplemod {
     public static final String MOD_ID = "examplemod";
     public static final int ABSOLUTE_MAXIMUM_STACK_SIZE = 1073741823;
 
-    public Examplemod(IEventBus modEventBus, ModContainer modContainer) {
+    public Examplemod(ModContainer modContainer, IEventBus modEventBus) {
+
         // 注册各种内容
         ItemReg.register(modEventBus);
         BlocksReg.register(modEventBus);
@@ -69,9 +70,11 @@ public class Examplemod {
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new LightningStaff());
         NeoForge.EVENT_BUS.register(new EntityOverlayRenderer());
-
+        NeoForge.EVENT_BUS.register(new EntityOutlineRenderer());
         // 注册网络处理器
-        modEventBus.register(NetworkHandler.class);
+//        modEventBus.register(NetworkHandler.class);
+
+
     }
 
 
@@ -120,7 +123,7 @@ public class Examplemod {
 
         for (Object2IntMap.Entry<Holder<Enchantment>> holderEntry : stack.getTagEnchantments().entrySet()) {
             if (holderEntry.getKey().getKey() == Enchantments.SHARPNESS && player.level().isClientSide()) {
-                player.sendSystemMessage(Component.literal("你的剑的锋利等级为：" + holderEntry.getIntValue()));
+                player.sendSystemMessage(Component.literal("的剑的锋利等级为：" + holderEntry.getIntValue()));
             }
         }
     }

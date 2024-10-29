@@ -17,6 +17,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderNameTagEvent;
 import org.joml.Matrix4f;
@@ -26,6 +28,7 @@ import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.Objects;
 
+@OnlyIn(value = Dist.CLIENT)
 public class EntityOverlayRenderer {
 
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Examplemod.MOD_ID, "textures/entity/overlay.png");

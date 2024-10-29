@@ -47,13 +47,13 @@ public class ObsidianInteractionHandler {
                 player.drop(removedItem, false);
             }
         }
-        sendSyncPacket(level, pos, ItemStack.EMPTY, true);
+//        sendSyncPacket(level, pos, ItemStack.EMPTY, true);
     }
 
     private static void addVirtualItem(Player player, BlockPos pos, ItemStack heldItem, Level level) {
         ItemStack virtualItem = player.getAbilities().instabuild ? heldItem.copy() : heldItem.split(1);
         VirtualItemRenderer.addVirtualItem(pos, virtualItem);
-        sendSyncPacket(level, pos, virtualItem, false);
+//        sendSyncPacket(level, pos, virtualItem, false);
     }
 
     private static void sendSyncPacket(Level level, BlockPos pos, ItemStack stack, boolean remove) {

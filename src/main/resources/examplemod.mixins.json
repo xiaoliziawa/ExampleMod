@@ -15,18 +15,23 @@
     "SnowballItemMixin",
     "TridentItemMixin",
     "WindChargeItemMixin",
+    "entities.ArrowHitMixin",
     "entities.EnderManMixin",
+    "entities.EntityMixin",
     "entities.IronGolemMixin",
+    "entities.PlayerAttackMixin",
     "entities.PlayerMixin",
     "entities.TridentEntityMixin",
     "entities.WindChargeMixin",
     "entities.ZombieMixin",
+    "items.BowItemMixin",
     "maxstack.ContainerMixin",
     "maxstack.DataComponentsMixin",
     "maxstack.ItemMixin2",
     "maxstack.ItemStackMixin"
   ],
   "client": [
+    "gui.GuiGraphicsMixin",
     "maxstack.GuiGraphicsMixin"
   ],
   "injectors": {
