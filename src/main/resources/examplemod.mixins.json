@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.prizowo.examplemod.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_17",
   "refmap": "examplemod.refmap.json",
   "mixins": [
     "EnderpearlItemMixin",
@@ -31,6 +31,8 @@
     "maxstack.ItemStackMixin"
   ],
   "client": [
+    "PlayerModelMixin",
+    "PlayerRendererMixin",
     "gui.GuiGraphicsMixin",
     "maxstack.GuiGraphicsMixin"
   ],

@@ -8,9 +8,11 @@ import com.prizowo.examplemod.custom.customentity.MyCustomEntity;
 import com.prizowo.examplemod.enchant.TFEnchantmentEffects;
 import com.prizowo.examplemod.enchant.TFMobEffects;
 import com.prizowo.examplemod.init.LightningStaff;
+import com.prizowo.examplemod.mixin.PlayerModelMixin;
 import com.prizowo.examplemod.network.NetworkHandler;
 import com.prizowo.examplemod.render.EntityOutlineRenderer;
 import com.prizowo.examplemod.render.EntityOverlayRenderer;
+import com.prizowo.examplemod.util.HeadManager;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -21,6 +23,7 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrownEgg;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -44,9 +47,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.Locale;
 import java.util.Objects;
 
-@Mod(Examplemod.MOD_ID)
+@Mod(Examplemod.MODID)
 public class Examplemod {
-    public static final String MOD_ID = "examplemod";
+    public static final String MODID = "examplemod";
     public static final int ABSOLUTE_MAXIMUM_STACK_SIZE = 1073741823;
     public static final Logger LOGGER = LogManager.getLogger(Examplemod.class);
 
@@ -77,8 +80,6 @@ public class Examplemod {
         NeoForge.EVENT_BUS.register(new EntityOutlineRenderer());
         // 注册网络处理器
         modEventBus.register(NetworkHandler.class);
-
-
     }
 
 
@@ -88,7 +89,7 @@ public class Examplemod {
     }
 
     public static ResourceLocation prefix(String name) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, name.toLowerCase(Locale.ROOT));
+        return ResourceLocation.fromNamespaceAndPath(MODID, name.toLowerCase(Locale.ROOT));
     }
 
     @SubscribeEvent
@@ -132,8 +133,23 @@ public class Examplemod {
         }
     }
 
+    @SubscribeEvent
+    public void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+        Player player = event.getEntity();
+        ItemStack stack = player.getMainHandItem();
+        
+        if (stack.is(Items.DIAMOND_PICKAXE) && player.isShiftKeyDown()) {
+            // 只在客户端处理头部显示
+            if (player.level().isClientSide) {
+                HeadManager.toggleHead(player);
+                LOGGER.info("Client: Head visibility toggled to: " + HeadManager.isHeadHidden());
+            }
+            event.setCanceled(true);
+        }
+    }
 
-    @EventBusSubscriber(modid = Examplemod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+
+    @EventBusSubscriber(modid = Examplemod.MODID, bus = EventBusSubscriber.Bus.MOD)
     public static class CommonModEvents {
         @SubscribeEvent(priority = EventPriority.LOWEST)
         public static void onModifyDefaultComponentsEvent(ModifyDefaultComponentsEvent event) {

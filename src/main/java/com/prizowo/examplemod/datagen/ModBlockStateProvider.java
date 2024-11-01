@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 public class ModBlockStateProvider extends BlockStateProvider {
 
     public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, Examplemod.MOD_ID, exFileHelper);
+        super(output, Examplemod.MODID, exFileHelper);
     }
 
     @Override

@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class HomingArrowRenderer extends ArrowRenderer<HomingArrow> {
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Examplemod.MOD_ID, "textures/entity/projectiles/arrow.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Examplemod.MODID, "textures/entity/projectiles/arrow.png");
 
     public HomingArrowRenderer(EntityRendererProvider.Context context) {
         super(context);

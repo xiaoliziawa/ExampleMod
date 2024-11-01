@@ -31,8 +31,8 @@ import java.util.Objects;
 @OnlyIn(value = Dist.CLIENT)
 public class EntityOverlayRenderer {
 
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Examplemod.MOD_ID, "textures/entity/overlay.png");
-    private static final ResourceLocation HEART_TEXTURE = ResourceLocation.fromNamespaceAndPath(Examplemod.MOD_ID, "textures/entity/heart.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Examplemod.MODID, "textures/entity/overlay.png");
+    private static final ResourceLocation HEART_TEXTURE = ResourceLocation.fromNamespaceAndPath(Examplemod.MODID, "textures/entity/heart.png");
     private static final double MAX_RENDER_DISTANCE_SQ = 50.0D * 50.0D;
     private static final DecimalFormat HEALTH_FORMAT = new DecimalFormat("#.#");
 

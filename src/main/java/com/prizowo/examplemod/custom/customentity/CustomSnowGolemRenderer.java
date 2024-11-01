@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CustomSnowGolemRenderer extends MobRenderer<CustomSnowGolem, SnowGolemModel<CustomSnowGolem>> {
 
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Examplemod.MOD_ID, "textures/entity/snow_golem.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Examplemod.MODID, "textures/entity/snow_golem.png");
 
     public CustomSnowGolemRenderer(EntityRendererProvider.Context context) {
         super(context, new SnowGolemModel<>(context.bakeLayer(ModelLayers.SNOW_GOLEM)), 0.5F);

@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class MyHumanoidEntityRenderer extends HumanoidMobRenderer<MyCustomEntity, MyHumanoidModel<MyCustomEntity>> {
-    public static final ResourceLocation TEXTURE = ResourceLocation.tryBuild(Examplemod.MOD_ID, "textures/entity/my_humanoid.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.tryBuild(Examplemod.MODID, "textures/entity/my_humanoid.png");
     private static final ResourceLocation FALLBACK_TEXTURE = ResourceLocation.tryParse("textures/entity/steve.png");
 
     public MyHumanoidEntityRenderer(EntityRendererProvider.Context context) {

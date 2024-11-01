@@ -8,5 +8,5 @@ import java.util.Objects;
 
 public class MyModelLayers {
     public static final ModelLayerLocation MY_HUMANOID = new ModelLayerLocation(
-            Objects.requireNonNull(ResourceLocation.tryBuild(Examplemod.MOD_ID, "my_humanoid")), "main");
+            Objects.requireNonNull(ResourceLocation.tryBuild(Examplemod.MODID, "my_humanoid")), "main");
 }

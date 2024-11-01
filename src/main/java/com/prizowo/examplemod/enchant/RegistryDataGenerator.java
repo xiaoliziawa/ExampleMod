@@ -19,6 +19,6 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
             .add(Registries.JUKEBOX_SONG, ModJukeboxSongs::bootstrap);
 
     public RegistryDataGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-        super(output, provider, BUILDER, Set.of("minecraft", Examplemod.MOD_ID));
+        super(output, provider, BUILDER, Set.of("minecraft", Examplemod.MODID));
     }
 }

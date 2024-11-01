@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public record SyncVirtualItemPacket(BlockPos pos, ItemStack stack, boolean remove) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<SyncVirtualItemPacket> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Examplemod.MOD_ID, "sync_virtual_item"));
+    public static final CustomPacketPayload.Type<SyncVirtualItemPacket> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Examplemod.MODID, "sync_virtual_item"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncVirtualItemPacket> STREAM_CODEC = new StreamCodec<>() {
         @Override

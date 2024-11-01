@@ -14,7 +14,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class BlocksReg {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, Examplemod.MOD_ID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, Examplemod.MODID);
     public static final Supplier<Block> CUSTOM_BLOCK = BLOCKS.register("customblock",
             () -> new Block(Block.Properties.of().strength(3)));
     public static final Supplier<Block> CUSTOM_BLOCK_2 = BLOCKS.register("customblock2",

@@ -7,11 +7,11 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-@EventBusSubscriber(modid = Examplemod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Examplemod.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class NetworkHandler {
     @SubscribeEvent
     public static void register(final RegisterPayloadHandlersEvent event) {
-        final PayloadRegistrar registrar = event.registrar(Examplemod.MOD_ID);
+        final PayloadRegistrar registrar = event.registrar(Examplemod.MODID);
         registrar.playBidirectional(
                 SyncVirtualItemPacket.TYPE,
                 SyncVirtualItemPacket.STREAM_CODEC,

@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class ExplosiveArrowRenderer extends ArrowRenderer<ExplosiveArrow> {
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Examplemod.MOD_ID,"textures/entity/projectiles/arrow.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Examplemod.MODID,"textures/entity/projectiles/arrow.png");
 
     public ExplosiveArrowRenderer(EntityRendererProvider.Context context) {
         super(context);

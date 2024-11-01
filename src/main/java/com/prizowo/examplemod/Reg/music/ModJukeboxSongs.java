@@ -14,7 +14,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public class ModJukeboxSongs {
     public static final ResourceKey<JukeboxSong> CUSTOM_SONG = ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath("examplemod", "custom_song"));
     private static ResourceKey<JukeboxSong> create(String name) {
-        return ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(Examplemod.MOD_ID, name));
+        return ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(Examplemod.MODID, name));
     }
     public static void bootstrap(BootstrapContext<JukeboxSong> context) {
         register(context, CUSTOM_SONG, JukeboxSongsReg.CUSTOM_SONG_SOUND, 180, 15);

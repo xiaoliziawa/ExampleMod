@@ -12,12 +12,12 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class CreativeTable {
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Examplemod.MOD_ID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Examplemod.MODID);
 
     public static final Supplier<CreativeModeTab> CREATIVE_TABLE = CREATIVE_MODE_TABS.register("example_tab", () ->
             CreativeModeTab.builder()
                     .icon(() -> new ItemStack(ItemReg.CUSTOM_ITEM.get()))
-                    .title(Component.translatable("itemGroup." + Examplemod.MOD_ID + ".creative"))
+                    .title(Component.translatable("itemGroup." + Examplemod.MODID + ".creative"))
                     .displayItems((parameters, output) -> {
                         // 添加所有注册的物品到创造模式物品栏
                         ItemReg.ITEMS.getEntries().forEach(item ->
