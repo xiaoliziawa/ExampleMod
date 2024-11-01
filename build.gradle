@@ -129,3 +129,11 @@ idea {
         downloadJavadoc = true
     }
 }
+
+configurations {
+    all {
+        resolutionStrategy {
+            force "net.neoforged:neoforge:${neo_version}"
+        }
+    }
+}
