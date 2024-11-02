@@ -18,5 +18,11 @@ public class NetworkHandler {
             HammerRangePacket.STREAM_CODEC, 
             HammerRangePacket::handle
         );
+
+        registrar.playToServer(
+            HammerDepthPacket.TYPE, 
+            HammerDepthPacket.STREAM_CODEC, 
+            HammerDepthPacket::handle
+        );
     }
 }

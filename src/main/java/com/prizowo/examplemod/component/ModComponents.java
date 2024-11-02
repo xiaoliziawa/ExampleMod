@@ -19,6 +19,12 @@ public class ModComponents {
                 .persistent(Codec.INT)
                 .build());
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> HAMMER_DEPTH = 
+        COMPONENTS.register("hammer_depth", 
+            () -> DataComponentType.<Integer>builder()
+                .persistent(Codec.INT)
+                .build());
+
     public static void register(IEventBus bus) {
         COMPONENTS.register(bus);
     }

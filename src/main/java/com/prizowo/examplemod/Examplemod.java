@@ -49,6 +49,7 @@ import com.prizowo.examplemod.items.HammerItem;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.InputEvent;
+import net.minecraft.client.gui.screens.Screen;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -163,7 +164,11 @@ public class Examplemod {
         if (player != null && player.isShiftKeyDown()) {
             ItemStack mainHand = player.getMainHandItem();
             if (mainHand.getItem() instanceof HammerItem hammer) {
-                hammer.cycleRange(player, event.getScrollDeltaY() > 0);
+                if (Screen.hasControlDown()) {
+                    hammer.cycleDepth(player, event.getScrollDeltaY() > 0);
+                } else {
+                    hammer.cycleRange(player, event.getScrollDeltaY() > 0);
+                }
                 event.setCanceled(true);
             }
         }
