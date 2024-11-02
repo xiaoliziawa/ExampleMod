@@ -17,7 +17,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
-@EventBusSubscriber(modid = Examplemod.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = Examplemod.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
 public class VirtualItemRendererClient {
     @SubscribeEvent
     public static void onRenderLevel(RenderLevelStageEvent event) {

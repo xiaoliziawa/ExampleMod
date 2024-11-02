@@ -2,6 +2,7 @@ package com.prizowo.examplemod;
 
 import com.prizowo.examplemod.Reg.*;
 import com.prizowo.examplemod.Reg.music.JukeboxSongsReg;
+import com.prizowo.examplemod.component.ModComponents;
 import com.prizowo.examplemod.custom.CustomEgg;
 import com.prizowo.examplemod.custom.customentity.CustomSnowGolem;
 import com.prizowo.examplemod.custom.customentity.MyCustomEntity;
@@ -43,6 +44,11 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.client.Minecraft;
+import com.prizowo.examplemod.items.HammerItem;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.event.InputEvent;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -80,6 +86,8 @@ public class Examplemod {
         NeoForge.EVENT_BUS.register(new EntityOutlineRenderer());
         // 注册网络处理器
         modEventBus.register(NetworkHandler.class);
+        //组件注册
+        ModComponents.register(modEventBus);
     }
 
 
@@ -148,6 +156,18 @@ public class Examplemod {
         }
     }
 
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onMouseScroll(InputEvent.MouseScrollingEvent event) {
+        Player player = Minecraft.getInstance().player;
+        if (player != null && player.isShiftKeyDown()) {
+            ItemStack mainHand = player.getMainHandItem();
+            if (mainHand.getItem() instanceof HammerItem hammer) {
+                hammer.cycleRange(player, event.getScrollDeltaY() > 0);
+                event.setCanceled(true);
+            }
+        }
+    }
 
     @EventBusSubscriber(modid = Examplemod.MODID, bus = EventBusSubscriber.Bus.MOD)
     public static class CommonModEvents {
