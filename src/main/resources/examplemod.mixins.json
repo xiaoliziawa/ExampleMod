@@ -28,7 +28,8 @@
     "maxstack.ContainerMixin",
     "maxstack.DataComponentsMixin",
     "maxstack.ItemMixin2",
-    "maxstack.ItemStackMixin"
+    "maxstack.ItemStackMixin",
+    "entities.LivingEntityMixin"
   ],
   "client": [
     "PlayerModelMixin",

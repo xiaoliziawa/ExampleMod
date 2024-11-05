@@ -5,5 +5,6 @@
   "item.examplemod.music_card": "Music Card",
   "item.examplemod.music_card.desc": "春日影",
   "jukebox_song.examplemod.custom_song" : "春日影",
-  "item.examplemod.diamond_hammer": "Diamond Hammer"
+  "item.examplemod.diamond_hammer": "Diamond Hammer",
+  "entity.examplemod.slime_projectile": "Slime Block"
 }

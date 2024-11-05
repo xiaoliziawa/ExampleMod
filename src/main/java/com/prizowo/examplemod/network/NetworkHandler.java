@@ -24,5 +24,23 @@ public class NetworkHandler {
             HammerDepthPacket.STREAM_CODEC, 
             HammerDepthPacket::handle
         );
+
+        registrar.playToServer(
+            MountEntityPacket.TYPE,
+            MountEntityPacket.STREAM_CODEC,
+            MountEntityPacket::handle
+        );
+
+        registrar.playToServer(
+            MountFlyPacket.TYPE,
+            MountFlyPacket.STREAM_CODEC,
+            MountFlyPacket::handle
+        );
+
+        registrar.playToServer(
+            MountAttackPacket.TYPE,
+            MountAttackPacket.STREAM_CODEC,
+            MountAttackPacket::handle
+        );
     }
 }

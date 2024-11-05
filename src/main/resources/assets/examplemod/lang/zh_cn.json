@@ -1,3 +1,6 @@
 {
-  "item.examplemod.diamond_hammer": "钻石锤"
+  "item.examplemod.diamond_hammer": "钻石锤",
+  "key.examplemod.mount": "骑乘生物",
+  "key.examplemod.descend": "下降",
+  "key.categories.examplemod": "示例模组"
 } 

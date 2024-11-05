@@ -12,6 +12,7 @@ import com.prizowo.examplemod.custom.customentity.CustomSnowGolem;
 import com.prizowo.examplemod.custom.customentity.MyCustomEntity;
 import com.prizowo.examplemod.items.ExplosiveArrow;
 import com.prizowo.examplemod.items.HomingArrow;
+import com.prizowo.examplemod.entity.SlimeProjectile;
 import java.util.Objects;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -63,6 +64,14 @@ public class EntityReg {
             .clientTrackingRange(4)
             .updateInterval(20)
             .build("explosive_arrow"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<SlimeProjectile>> SLIME_PROJECTILE = ENTITIES.register("slime_projectile",
+        () -> EntityType.Builder.<SlimeProjectile>of(SlimeProjectile::new, MobCategory.MISC)
+            .sized(1.0F, 1.0F)
+            .clientTrackingRange(4)
+            .updateInterval(10)
+            .build("slime_projectile")
+    );
 
     public EntityReg(IEventBus eventBus) {
         ENTITIES.register(eventBus);

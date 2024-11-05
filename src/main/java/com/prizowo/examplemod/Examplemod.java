@@ -9,7 +9,6 @@ import com.prizowo.examplemod.custom.customentity.MyCustomEntity;
 import com.prizowo.examplemod.enchant.TFEnchantmentEffects;
 import com.prizowo.examplemod.enchant.TFMobEffects;
 import com.prizowo.examplemod.init.LightningStaff;
-import com.prizowo.examplemod.mixin.PlayerModelMixin;
 import com.prizowo.examplemod.network.NetworkHandler;
 import com.prizowo.examplemod.render.EntityOutlineRenderer;
 import com.prizowo.examplemod.render.EntityOverlayRenderer;
@@ -19,6 +18,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
@@ -35,6 +35,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -50,6 +51,13 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.minecraft.client.gui.screens.Screen;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import com.prizowo.examplemod.client.KeyBindings;
+import com.prizowo.examplemod.network.MountEntityPacket;
+import com.prizowo.examplemod.events.MountMovementEvents;
+import com.prizowo.examplemod.events.MountAttackEvents;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -62,7 +70,6 @@ public class Examplemod {
 
     public Examplemod(ModContainer modContainer, IEventBus modEventBus) {
 
-        // 注册各种内容
         ItemReg.register(modEventBus);
         BlocksReg.register(modEventBus);
         BlockEntities.BLOCK_ENTITIES.register(modEventBus);
@@ -74,23 +81,46 @@ public class Examplemod {
         JukeboxSongsReg.JUKEBOX_SONGS.register(modEventBus);
         CreativeTable.CREATIVE_MODE_TABS.register(modEventBus);
 
-        // 添加事件监听器
         modEventBus.addListener(this::addEntityAttributes);
 
-        // 注册配置
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
-        // 注册事件监听器
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new LightningStaff());
         NeoForge.EVENT_BUS.register(new EntityOverlayRenderer());
         NeoForge.EVENT_BUS.register(new EntityOutlineRenderer());
-        // 注册网络处理器
         modEventBus.register(NetworkHandler.class);
-        //组件注册
         ModComponents.register(modEventBus);
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            modEventBus.addListener(this::registerKeyBinds);
+        }
+
+        NeoForge.EVENT_BUS.register(MountMovementEvents.class);
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            NeoForge.EVENT_BUS.register(MountAttackEvents.class);
+        }
     }
 
+    @OnlyIn(Dist.CLIENT)
+    private void registerKeyBinds(RegisterKeyMappingsEvent event) {
+        event.register(KeyBindings.MOUNT_KEY);
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onClientTick(ClientTickEvent.Post event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Player player = minecraft.player;
+        
+        if (player != null && KeyBindings.MOUNT_KEY.consumeClick()) {
+            Entity target = minecraft.crosshairPickEntity;
+            if (target != null && player.distanceTo(target) < 3.0) {
+                PacketDistributor.sendToServer(new MountEntityPacket(target.getId()));
+            }
+        }
+    }
 
     private void addEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(EntityReg.MY_HUMANOID.get(), MyCustomEntity.createAttributes().build());
@@ -148,10 +178,9 @@ public class Examplemod {
         ItemStack stack = player.getMainHandItem();
         
         if (stack.is(Items.DIAMOND_PICKAXE) && player.isShiftKeyDown()) {
-            // 只在客户端处理头部显示
             if (player.level().isClientSide) {
                 HeadManager.toggleHead(player);
-                LOGGER.info("Client: Head visibility toggled to: " + HeadManager.isHeadHidden());
+                LOGGER.info("Client: Head visibility toggled to: {}", HeadManager.isHeadHidden());
             }
             event.setCanceled(true);
         }
