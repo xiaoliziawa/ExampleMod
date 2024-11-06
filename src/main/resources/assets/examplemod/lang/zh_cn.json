@@ -1,6 +1,14 @@
 {
+  "itemGroup.examplemod.creative": "示例模组",
+  "block.examplemod.customblock": "自定义方块",
+  "item.examplemod.customblock2": "自定义方块2",
+  "item.examplemod.music_card": "音乐卡片",
+  "item.examplemod.music_card.desc": "春日影",
+  "jukebox_song.examplemod.custom_song": "春日影",
   "item.examplemod.diamond_hammer": "钻石锤",
-  "key.examplemod.mount": "骑乘生物",
+  "entity.examplemod.slime_projectile": "史莱姆方块",
+  "key.categories.examplemod": "示例模组",
+  "key.examplemod.mount": "骑乘",
   "key.examplemod.descend": "下降",
-  "key.categories.examplemod": "示例模组"
-} 
+  "key.examplemod.toggle_overlay": "切换显示覆盖层"
+}

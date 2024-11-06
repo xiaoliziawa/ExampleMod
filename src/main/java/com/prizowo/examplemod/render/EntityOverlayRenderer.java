@@ -4,6 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import com.prizowo.examplemod.Examplemod;
+import com.prizowo.examplemod.client.ClientEvents;
+import com.prizowo.examplemod.client.ClientForgeEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.GameRenderer;
@@ -38,6 +40,11 @@ public class EntityOverlayRenderer {
 
     @SubscribeEvent
     public void onRenderNameTag(RenderNameTagEvent event) {
+        // 检查渲染开关状态
+        if (!ClientForgeEvents.isOverlayEnabled()) {
+            return;
+        }
+        
         Entity entity = event.getEntity();
         Minecraft minecraft = Minecraft.getInstance();
         Player player = minecraft.player;

@@ -18,11 +18,11 @@ public class ExplosiveArrow extends AbstractArrow {
     }
 
     public ExplosiveArrow(Level level, LivingEntity shooter) {
-        super(EntityReg.EXPLOSIVE_ARROW.get(), shooter, level, ItemStack.EMPTY, null);
+        super(EntityReg.EXPLOSIVE_ARROW.get(), shooter, level, new ItemStack(Items.ARROW), null);
     }
 
     public ExplosiveArrow(Level level, double x, double y, double z) {
-        super(EntityReg.EXPLOSIVE_ARROW.get(), x, y, z, level, ItemStack.EMPTY, null);
+        super(EntityReg.EXPLOSIVE_ARROW.get(), x, y, z, level, new ItemStack(Items.ARROW), null);
     }
 
     @Override

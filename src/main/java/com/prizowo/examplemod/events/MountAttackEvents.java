@@ -2,6 +2,7 @@ package com.prizowo.examplemod.events;
 
 import com.prizowo.examplemod.Examplemod;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -14,11 +15,18 @@ import com.prizowo.examplemod.network.MountAttackPacket;
 public class MountAttackEvents {
 
     @SubscribeEvent
-    public static void onLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
+    public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
         Player player = event.getEntity();
+        if (player.getVehicle() instanceof Mob) {
+            PacketDistributor.sendToServer(new MountAttackPacket(false));
+        }
+    }
 
-        if (player != null && player.getVehicle() instanceof Mob) {
-            PacketDistributor.sendToServer(new MountAttackPacket());
+    @SubscribeEvent
+    public static void onRightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
+        Player player = event.getEntity();
+        if (player.getVehicle() instanceof Shulker) {
+            PacketDistributor.sendToServer(new MountAttackPacket(true));
         }
     }
 } 

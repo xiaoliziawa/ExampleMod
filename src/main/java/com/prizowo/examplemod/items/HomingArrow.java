@@ -35,7 +35,7 @@ public class HomingArrow extends AbstractArrow {
     private boolean hasSplit = false;
     private Vec3 originalDirection; // 保存初始方向
 
-    public HomingArrow(EntityType<? extends HomingArrow> type, Level level) {
+    public HomingArrow(EntityType<? extends AbstractArrow> type, Level level) {
         super(type, level);
         this.setNoGravity(true);
         this.pickup = Pickup.DISALLOWED;

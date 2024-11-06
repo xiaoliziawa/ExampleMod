@@ -52,12 +52,11 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-import com.prizowo.examplemod.client.KeyBindings;
-import com.prizowo.examplemod.network.MountEntityPacket;
 import com.prizowo.examplemod.events.MountMovementEvents;
 import com.prizowo.examplemod.events.MountAttackEvents;
+import com.prizowo.examplemod.client.KeyBindings;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import com.prizowo.examplemod.events.MountEvents;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -89,36 +88,14 @@ public class Examplemod {
         NeoForge.EVENT_BUS.register(new LightningStaff());
         NeoForge.EVENT_BUS.register(new EntityOverlayRenderer());
         NeoForge.EVENT_BUS.register(new EntityOutlineRenderer());
+        NeoForge.EVENT_BUS.register(MountEvents.class);
         modEventBus.register(NetworkHandler.class);
         ModComponents.register(modEventBus);
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(this::registerKeyBinds);
-        }
-
-        NeoForge.EVENT_BUS.register(MountMovementEvents.class);
-
-        if (FMLEnvironment.dist == Dist.CLIENT) {
+            NeoForge.EVENT_BUS.register(MountMovementEvents.class);
             NeoForge.EVENT_BUS.register(MountAttackEvents.class);
-        }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    private void registerKeyBinds(RegisterKeyMappingsEvent event) {
-        event.register(KeyBindings.MOUNT_KEY);
-    }
-
-    @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
-    public void onClientTick(ClientTickEvent.Post event) {
-        Minecraft minecraft = Minecraft.getInstance();
-        Player player = minecraft.player;
-        
-        if (player != null && KeyBindings.MOUNT_KEY.consumeClick()) {
-            Entity target = minecraft.crosshairPickEntity;
-            if (target != null && player.distanceTo(target) < 3.0) {
-                PacketDistributor.sendToServer(new MountEntityPacket(target.getId()));
-            }
         }
     }
 
@@ -218,5 +195,12 @@ public class Examplemod {
                 event.modify(item2, builder -> builder.set(DataComponents.MAX_STACK_SIZE, i));
             });
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void registerKeyBinds(RegisterKeyMappingsEvent event) {
+        event.register(KeyBindings.MOUNT_KEY);
+        event.register(KeyBindings.DESCEND_KEY);
+        event.register(KeyBindings.TOGGLE_OVERLAY);
     }
 }
