@@ -12,12 +12,11 @@ import net.minecraft.Util;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ModJukeboxSongs {
-    public static final ResourceKey<JukeboxSong> CUSTOM_SONG = ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath("examplemod", "custom_song"));
-    private static ResourceKey<JukeboxSong> create(String name) {
-        return ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(Examplemod.MODID, name));
-    }
+    public static final ResourceKey<JukeboxSong> CUSTOM_SONG = ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(Examplemod.MODID, "custom_song"));
+    public static final ResourceKey<JukeboxSong> ZOMBIE_SOUND = ResourceKey.create(Registries.JUKEBOX_SONG,ResourceLocation.fromNamespaceAndPath(Examplemod.MODID, "zombie_sound"));
     public static void bootstrap(BootstrapContext<JukeboxSong> context) {
         register(context, CUSTOM_SONG, JukeboxSongsReg.CUSTOM_SONG_SOUND, 180, 15);
+        register(context, ZOMBIE_SOUND, JukeboxSongsReg.ZOMBIE_SOUND, 180, 15);
     }
     private static void register(BootstrapContext<JukeboxSong> context, ResourceKey<JukeboxSong> key, DeferredHolder<SoundEvent, SoundEvent> soundEvent, int lengthInSeconds, int comparatorOutput) {
         context.register(key, new JukeboxSong(soundEvent, Component.translatable(Util.makeDescriptionId("jukebox_song", key.location())), (float)lengthInSeconds, comparatorOutput));

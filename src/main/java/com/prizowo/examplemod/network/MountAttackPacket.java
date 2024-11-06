@@ -1,33 +1,45 @@
 package com.prizowo.examplemod.network;
 
 import com.prizowo.examplemod.Examplemod;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.projectile.*;
 import net.minecraft.world.entity.item.PrimedTnt;
+import net.minecraft.world.item.ThrowablePotionItem;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.core.particles.ParticleTypes;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 import net.minecraft.world.entity.EntityType;
 import com.prizowo.examplemod.entity.SlimeProjectile;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.projectile.LlamaSpit;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.registries.BuiltInRegistries;
+import java.util.List;
 
 public record MountAttackPacket() implements CustomPacketPayload {
     public static final Type<MountAttackPacket> TYPE = new Type<>(Examplemod.prefix("mount_attack"));
-
     private static final MountAttackPacket INSTANCE = new MountAttackPacket();
-
-    public static final StreamCodec<FriendlyByteBuf, MountAttackPacket> STREAM_CODEC =
-            StreamCodec.unit(INSTANCE);
+    public static final StreamCodec<FriendlyByteBuf, MountAttackPacket> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
     public static void handle(final MountAttackPacket data, final IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
@@ -171,6 +183,106 @@ public record MountAttackPacket() implements CustomPacketPayload {
                         mount.level().playSound(null, mount.getX(), mount.getY(), mount.getZ(),
                                 SoundEvents.LLAMA_SPIT, SoundSource.NEUTRAL, 1.0F,
                                 1.0F + (mount.getRandom().nextFloat() - mount.getRandom().nextFloat()) * 0.2F);
+                    }
+                    else if (mount instanceof Villager) {
+                        Vec3 start = mount.getEyePosition();
+                        Vec3 baseViewVec = viewVec;
+                        
+                        // 播放村民交易成功的声音
+                        mount.level().playSound(null, mount.getX(), mount.getY(), mount.getZ(),
+                                SoundEvents.VILLAGER_YES, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        
+                        // 霰弹效果参数
+                        int pelletCount = 12;  // 弹丸数量
+                        float spreadAngle = 15.0F;  // 扩散角度
+                        
+                        for (int i = 0; i < pelletCount; i++) {
+                            // 计算每个弹丸的随机偏移角度
+                            float horizontalAngle = (float) (Math.random() * spreadAngle - spreadAngle/2);
+                            float verticalAngle = (float) (Math.random() * spreadAngle - spreadAngle/2);
+                            
+                            // 根据角度旋转向量
+                            Vec3 rotatedVec = baseViewVec
+                                .xRot((float) Math.toRadians(verticalAngle))
+                                .yRot((float) Math.toRadians(horizontalAngle));
+                                
+                            Vec3 end = start.add(rotatedVec.multiply(50, 50, 50));
+                            
+                            AABB boundingBox = new AABB(start.x, start.y, start.z, end.x, end.y, end.z)
+                                    .inflate(1.0);
+                            
+                            EntityHitResult entityHit = null;
+                            double closestDistance = Double.MAX_VALUE;
+                            
+                            for (Entity target : serverPlayer.level().getEntities(serverPlayer, boundingBox)) {
+                                if (target == serverPlayer || target == mount) continue;
+                                
+                                AABB targetBox = target.getBoundingBox();
+                                Vec3 intersection = targetBox.clip(start, end).orElse(null);
+                                
+                                if (intersection != null) {
+                                    double distance = start.distanceToSqr(intersection);
+                                    if (distance < closestDistance) {
+                                        closestDistance = distance;
+                                        entityHit = new EntityHitResult(target, intersection);
+                                    }
+                                }
+                            }
+
+                            Vec3 particleEnd = entityHit != null ? entityHit.getLocation() : end;
+                            double distance = start.distanceTo(particleEnd);
+                            Vec3 step = rotatedVec.scale(0.5);
+                            
+                            // 生成粒子效果
+                            for (double d = 0; d < distance; d += 0.5) {
+                                Vec3 pos = start.add(step.scale(d));
+                                ((ServerLevel)serverPlayer.level()).sendParticles(
+                                    ParticleTypes.COMPOSTER,
+                                    pos.x, pos.y, pos.z,
+                                    1,  // 减少每个位置的粒子数量
+                                    0.0, 0.0, 0.0,
+                                    0.0
+                                );
+                            }
+
+                            // 如果击中实体，造成伤害
+                            if (entityHit != null) {
+                                Entity target = entityHit.getEntity();
+                                target.hurt(serverPlayer.level().damageSources().mobAttack(mount), 15.0f);  // 每个弹丸的伤害平分
+                            }
+                        }
+                    }
+                    else if (mount instanceof Witch) {
+                        // 获取所有注册的药水
+                        List<Holder.Reference<Potion>> potions = BuiltInRegistries.POTION.holders().toList();
+                        
+                        // 随机选择一个药水
+                        Holder<Potion> randomPotion = potions.get(mount.getRandom().nextInt(potions.size()));
+                        
+                        // 创建药水物品
+                        ItemStack potionStack = new ItemStack(Items.SPLASH_POTION);
+                        potionStack.set(DataComponents.POTION_CONTENTS, new PotionContents(randomPotion));
+                        
+                        // 创建投掷药水实体
+                        ThrownPotion thrownpotion = new ThrownPotion(mount.level(), mount);
+                        thrownpotion.setItem(potionStack);
+                        
+                        // 设置药水的位置和运动方向
+                        Vec3 start = mount.getEyePosition();
+                        thrownpotion.setPos(start.x, start.y, start.z);
+                        
+                        // 使用弓箭的物理参数
+                        float velocity = 3.0F;  // 弓箭的基础速度
+                        float inaccuracy = 0.0F;  // 精确度 (0 = 完全精确)
+                        
+                        thrownpotion.shoot(viewVec.x, viewVec.y, viewVec.z, velocity, inaccuracy);
+                        
+                        // 添加到世界
+                        mount.level().addFreshEntity(thrownpotion);
+                        
+                        // 播放投掷声音
+                        mount.level().playSound(null, mount.getX(), mount.getY(), mount.getZ(),
+                                SoundEvents.WITCH_THROW, SoundSource.NEUTRAL, 1.0F, 0.8F + mount.getRandom().nextFloat() * 0.4F);
                     }
                 }
             }

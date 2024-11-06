@@ -16,7 +16,7 @@ public class MountAttackEvents {
     @SubscribeEvent
     public static void onLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
         Player player = event.getEntity();
-        
+
         if (player != null && player.getVehicle() instanceof Mob) {
             PacketDistributor.sendToServer(new MountAttackPacket());
         }

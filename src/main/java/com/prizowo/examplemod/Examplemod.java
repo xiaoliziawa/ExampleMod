@@ -76,9 +76,9 @@ public class Examplemod {
         EntityReg.ENTITIES.register(modEventBus);
         TFEnchantmentEffects.ENTITY_EFFECTS.register(modEventBus);
         TFMobEffects.MOB_EFFECTS.register(modEventBus);
-        JukeboxSongsReg.ITEMS.register(modEventBus);
         JukeboxSongsReg.SOUND_EVENTS.register(modEventBus);
         JukeboxSongsReg.JUKEBOX_SONGS.register(modEventBus);
+        JukeboxSongsReg.ITEMS.register(modEventBus);
         CreativeTable.CREATIVE_MODE_TABS.register(modEventBus);
 
         modEventBus.addListener(this::addEntityAttributes);
