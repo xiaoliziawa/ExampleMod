@@ -10,6 +10,8 @@ import com.prizowo.examplemod.custom.CustomEgg;
 import com.prizowo.examplemod.custom.CustomSnowball;
 import com.prizowo.examplemod.custom.customentity.CustomSnowGolem;
 import com.prizowo.examplemod.custom.customentity.MyCustomEntity;
+import com.prizowo.examplemod.entity.ThrownAxeEntity;
+import com.prizowo.examplemod.entity.ThrownItemEntity;
 import com.prizowo.examplemod.items.ExplosiveArrow;
 import com.prizowo.examplemod.items.HomingArrow;
 import com.prizowo.examplemod.entity.SlimeProjectile;
@@ -23,8 +25,9 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+
 public class EntityReg {
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, "examplemod");
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, Examplemod.MODID);
     
     public static final DeferredHolder<EntityType<?>, EntityType<MyCustomEntity>> MY_HUMANOID = ENTITIES.register("my_humanoid", 
         () -> Builder.<MyCustomEntity>of(MyCustomEntity::new, MobCategory.CREATURE)
@@ -73,6 +76,19 @@ public class EntityReg {
             .build("slime_projectile")
     );
 
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrownAxeEntity>> THROWN_AXE = ENTITIES.register("thrown_axe",
+        () -> EntityType.Builder.<ThrownAxeEntity>of(ThrownAxeEntity::new, MobCategory.MISC)
+            .sized(0.5F, 0.5F)
+            .clientTrackingRange(4)
+            .updateInterval(20)
+            .build("thrown_axe"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrownItemEntity>> THROWN_ITEM = ENTITIES.register("thrown_item",
+            () -> EntityType.Builder.<ThrownItemEntity>of(ThrownItemEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build("thrown_item"));
     public EntityReg(IEventBus eventBus) {
         ENTITIES.register(eventBus);
     }

@@ -6,5 +6,8 @@
   "item.examplemod.music_card.desc": "Spring Shadow",
   "jukebox_song.examplemod.custom_song": "Spring Shadow",
   "item.examplemod.diamond_hammer": "Diamond Hammer",
-  "entity.examplemod.slime_projectile": "Slime Block"
+  "entity.examplemod.slime_projectile": "Slime Block",
+  "key.examplemod.toggle_throw": "Toggle Item Throwing",
+  "message.examplemod.throw_enabled": "§aItem throwing enabled",
+  "message.examplemod.throw_disabled": "§cItem throwing disabled"
 }

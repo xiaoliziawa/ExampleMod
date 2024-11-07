@@ -6,7 +6,7 @@
   "refmap": "examplemod.refmap.json",
   "mixins": [
     "EnderpearlItemMixin",
-    "ItemMixin",
+    "ItemThrowMixin",
     "MaceMixin",
     "MixinRedstoneLampBlock",
     "PistonBaseBlockMixin",
@@ -19,6 +19,7 @@
     "entities.EnderManMixin",
     "entities.EntityMixin",
     "entities.IronGolemMixin",
+    "entities.LivingEntityMixin",
     "entities.PlayerAttackMixin",
     "entities.PlayerMixin",
     "entities.TridentEntityMixin",
@@ -28,8 +29,7 @@
     "maxstack.ContainerMixin",
     "maxstack.DataComponentsMixin",
     "maxstack.ItemMixin2",
-    "maxstack.ItemStackMixin",
-    "entities.LivingEntityMixin"
+    "maxstack.ItemStackMixin"
   ],
   "client": [
     "PlayerModelMixin",

@@ -2,6 +2,7 @@ package com.prizowo.examplemod;
 
 import com.prizowo.examplemod.Reg.*;
 import com.prizowo.examplemod.Reg.music.JukeboxSongsReg;
+import com.prizowo.examplemod.client.renderer.ThrownAxeRenderer;
 import com.prizowo.examplemod.component.ModComponents;
 import com.prizowo.examplemod.custom.CustomEgg;
 import com.prizowo.examplemod.custom.customentity.CustomSnowGolem;
@@ -18,7 +19,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +35,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -94,6 +94,7 @@ public class Examplemod {
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(this::registerKeyBinds);
+            modEventBus.addListener(this::registerRenderers);
             NeoForge.EVENT_BUS.register(MountMovementEvents.class);
             NeoForge.EVENT_BUS.register(MountAttackEvents.class);
         }
@@ -203,4 +204,10 @@ public class Examplemod {
         event.register(KeyBindings.DESCEND_KEY);
         event.register(KeyBindings.TOGGLE_OVERLAY);
     }
+
+    @OnlyIn(Dist.CLIENT)
+    private void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(EntityReg.THROWN_AXE.get(), ThrownAxeRenderer::new);
+    }
+
 }

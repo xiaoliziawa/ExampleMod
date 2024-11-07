@@ -13,6 +13,7 @@ import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -43,18 +44,25 @@ import java.util.List;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Shulker;
+import java.util.UUID;
+import java.util.Map;
+import java.util.HashMap;
 
 public record MountAttackPacket(boolean isRightClick) implements CustomPacketPayload {
     public static final Type<MountAttackPacket> TYPE = new Type<>(Examplemod.prefix("mount_attack"));
-    
+
     public static final StreamCodec<FriendlyByteBuf, MountAttackPacket> STREAM_CODEC = StreamCodec.composite(
-        StreamCodec.of(
-                FriendlyByteBuf::writeBoolean,
-            FriendlyByteBuf::readBoolean
-        ),
-        MountAttackPacket::isRightClick,
-        MountAttackPacket::new
+            StreamCodec.of(
+                    FriendlyByteBuf::writeBoolean,
+                    FriendlyByteBuf::readBoolean
+            ),
+            MountAttackPacket::isRightClick,
+            MountAttackPacket::new
     );
+
+    // 在类的开头添加一个静态Map来跟踪冷却时间
+    private static final Map<UUID, Long> wardenSonicBoomCooldowns = new HashMap<>();
+    private static final long WARDEN_SONIC_BOOM_COOLDOWN = 5000; // 5秒冷却时间
 
     public static void handle(final MountAttackPacket data, final IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
@@ -70,9 +78,9 @@ public record MountAttackPacket(boolean isRightClick) implements CustomPacketPay
                         if (fireball != null) {
                             fireball.setOwner(mount);
                             fireball.setPos(
-                                mount.getX() + viewVec.x * 4.0D,
-                                mount.getY(0.5D) + 0.5D,
-                                mount.getZ() + viewVec.z * 4.0D
+                                    mount.getX() + viewVec.x * 4.0D,
+                                    mount.getY(0.5D) + 0.5D,
+                                    mount.getZ() + viewVec.z * 4.0D
                             );
                             fireball.setDeltaMovement(viewVec.scale(1.5D));
                             mount.level().addFreshEntity(fireball);
@@ -83,9 +91,9 @@ public record MountAttackPacket(boolean isRightClick) implements CustomPacketPay
                         if (fireball != null) {
                             fireball.setOwner(mount);
                             fireball.setPos(
-                                mount.getX() + viewVec.x * 4.0D,
-                                mount.getY(0.5D) + 0.5D,
-                                mount.getZ() + viewVec.z * 4.0D
+                                    mount.getX() + viewVec.x * 4.0D,
+                                    mount.getY(0.5D) + 0.5D,
+                                    mount.getZ() + viewVec.z * 4.0D
                             );
                             fireball.setDeltaMovement(viewVec.scale(1.5D));
                             mount.level().addFreshEntity(fireball);
@@ -96,9 +104,9 @@ public record MountAttackPacket(boolean isRightClick) implements CustomPacketPay
                         if (skull != null) {
                             skull.setOwner(mount);
                             skull.setPos(
-                                mount.getX() + viewVec.x * 4.0D,
-                                mount.getY(0.5D) + 0.5D,
-                                mount.getZ() + viewVec.z * 4.0D
+                                    mount.getX() + viewVec.x * 4.0D,
+                                    mount.getY(0.5D) + 0.5D,
+                                    mount.getZ() + viewVec.z * 4.0D
                             );
                             skull.setDeltaMovement(viewVec.scale(1.5D));
                             mount.level().addFreshEntity(skull);
@@ -109,9 +117,9 @@ public record MountAttackPacket(boolean isRightClick) implements CustomPacketPay
                         if (arrow != null) {
                             arrow.setOwner(mount);
                             arrow.setPos(
-                                mount.getX() + viewVec.x * 4.0D,
-                                mount.getY(0.5D) + 0.5D,
-                                mount.getZ() + viewVec.z * 4.0D
+                                    mount.getX() + viewVec.x * 4.0D,
+                                    mount.getY(0.5D) + 0.5D,
+                                    mount.getZ() + viewVec.z * 4.0D
                             );
                             arrow.shoot(viewVec.x, viewVec.y, viewVec.z, 3.0F, 1.0F);
                             mount.level().addFreshEntity(arrow);
@@ -153,9 +161,9 @@ public record MountAttackPacket(boolean isRightClick) implements CustomPacketPay
                                 if (fangs != null) {
                                     fangs.setOwner(mount);
                                     fangs.setPos(
-                                        finalX,
-                                        mount.getY(),
-                                        finalZ
+                                            finalX,
+                                            mount.getY(),
+                                            finalZ
                                     );
                                     mount.level().addFreshEntity(fangs);
                                 }
@@ -174,9 +182,9 @@ public record MountAttackPacket(boolean isRightClick) implements CustomPacketPay
                                 double rotatedZ = viewVec.x * Math.sin(Math.toRadians(angleOffset)) + viewVec.z * Math.cos(Math.toRadians(angleOffset));
 
                                 spit.setPos(
-                                    mount.getX() - (double)(mount.getBbWidth() + 1.0F) * 0.5D * Math.sin(mount.yBodyRot * 0.017453292F),
-                                    mount.getEyeY() - 0.10000000149011612D,
-                                    mount.getZ() + (double)(mount.getBbWidth() + 1.0F) * 0.5D * Math.cos(mount.yBodyRot * 0.017453292F)
+                                        mount.getX() - (double)(mount.getBbWidth() + 1.0F) * 0.5D * Math.sin(mount.yBodyRot * 0.017453292F),
+                                        mount.getEyeY() - 0.10000000149011612D,
+                                        mount.getZ() + (double)(mount.getBbWidth() + 1.0F) * 0.5D * Math.cos(mount.yBodyRot * 0.017453292F)
                                 );
                                 spit.setOwner(mount);
                                 spit.shoot(rotatedX, viewVec.y + 0.1, rotatedZ, 1.5F, 10.0F);
@@ -185,71 +193,75 @@ public record MountAttackPacket(boolean isRightClick) implements CustomPacketPay
                         }
 
                         mount.level().playSound(null, mount.getX(), mount.getY(), mount.getZ(),
-                            SoundEvents.LLAMA_SPIT, SoundSource.NEUTRAL, 1.0F,
-                            1.0F + (mount.getRandom().nextFloat() - mount.getRandom().nextFloat()) * 0.2F);
+                                SoundEvents.LLAMA_SPIT, SoundSource.NEUTRAL, 1.0F,
+                                1.0F + (mount.getRandom().nextFloat() - mount.getRandom().nextFloat()) * 0.2F);
                     }
                     else if (mount instanceof Witch) {
                         // 创建投掷药水实体
                         ThrownPotion potion = new ThrownPotion(mount.level(), mount);
-                        
+
                         // 随机选择一个药水效果
                         List<Holder.Reference<Potion>> potions = BuiltInRegistries.POTION.holders().toList();
                         Holder<Potion> randomPotion = potions.get(mount.getRandom().nextInt(potions.size()));
-                        
+
                         // 创建药水物品
                         ItemStack potionStack = new ItemStack(Items.SPLASH_POTION);
                         potionStack.set(DataComponents.POTION_CONTENTS, new PotionContents(randomPotion));
-                        
+
                         // 设置药水物品和发射参数
                         potion.setItem(potionStack);
                         Vec3 start = mount.getEyePosition();
                         potion.setPos(start.x, start.y, start.z);
                         potion.shoot(viewVec.x, viewVec.y + 0.2, viewVec.z, 0.75F, 8.0F);  // 使用抛物线轨迹
-                        
+
                         // 添加到世界
                         mount.level().addFreshEntity(potion);
-                        
+
                         // 播放投掷声音
-                        mount.level().playSound(null, 
-                            mount.getX(), mount.getY(), mount.getZ(),
-                            SoundEvents.WITCH_THROW, 
-                            SoundSource.HOSTILE, 
-                            1.0F, 
-                            0.8F + mount.getRandom().nextFloat() * 0.4F
+                        mount.level().playSound(null,
+                                mount.getX(), mount.getY(), mount.getZ(),
+                                SoundEvents.WITCH_THROW,
+                                SoundSource.HOSTILE,
+                                1.0F,
+                                0.8F + mount.getRandom().nextFloat() * 0.4F
                         );
                     }
                     else if (mount instanceof Villager) {
                         Vec3 start = mount.getEyePosition();
                         Vec3 baseViewVec = viewVec;
-                        
+
+                        // 在服务器端为玩家播放声音
+                        mount.level().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
+                                SoundEvents.VILLAGER_YES, SoundSource.NEUTRAL, 1.0F, 1.0F);
+
                         // 霰弹效果参数
                         int pelletCount = 14;  // 弹丸数量
                         float spreadAngle = 15.0F;  // 扩散角度
-                        
+
                         for (int i = 0; i < pelletCount; i++) {
                             // 计算每个弹丸的随机偏移角度
                             float horizontalAngle = (float) (Math.random() * spreadAngle - spreadAngle/2);
                             float verticalAngle = (float) (Math.random() * spreadAngle - spreadAngle/2);
-                            
+
                             // 根据角度旋转向量
                             Vec3 rotatedVec = baseViewVec
-                                .xRot((float) Math.toRadians(verticalAngle))
-                                .yRot((float) Math.toRadians(horizontalAngle));
-                                
+                                    .xRot((float) Math.toRadians(verticalAngle))
+                                    .yRot((float) Math.toRadians(horizontalAngle));
+
                             Vec3 end = start.add(rotatedVec.multiply(50, 50, 50));
-                            
+
                             AABB boundingBox = new AABB(start.x, start.y, start.z, end.x, end.y, end.z)
                                     .inflate(1.0);
-                            
+
                             EntityHitResult entityHit = null;
                             double closestDistance = Double.MAX_VALUE;
-                            
+
                             for (Entity target : serverPlayer.level().getEntities(serverPlayer, boundingBox)) {
                                 if (target == serverPlayer || target == mount) continue;
-                                
+
                                 AABB targetBox = target.getBoundingBox();
                                 Vec3 intersection = targetBox.clip(start, end).orElse(null);
-                                
+
                                 if (intersection != null) {
                                     double distance = start.distanceToSqr(intersection);
                                     if (distance < closestDistance) {
@@ -262,23 +274,23 @@ public record MountAttackPacket(boolean isRightClick) implements CustomPacketPay
                             Vec3 particleEnd = entityHit != null ? entityHit.getLocation() : end;
                             double distance = start.distanceTo(particleEnd);
                             Vec3 step = rotatedVec.scale(0.5);
-                            
+
                             // 生成粒子效果
                             for (double d = 0; d < distance; d += 0.5) {
                                 Vec3 pos = start.add(step.scale(d));
                                 ((ServerLevel)mount.level()).sendParticles(
-                                    ParticleTypes.COMPOSTER,
-                                    pos.x, pos.y, pos.z,
-                                    1,  // 减少每个位置的粒子数量
-                                    0.0, 0.0, 0.0,
-                                    0.0
+                                        ParticleTypes.COMPOSTER,
+                                        pos.x, pos.y, pos.z,
+                                        1,  // 减少每个位置的粒子数量
+                                        0.0, 0.0, 0.0,
+                                        0.0
                                 );
                             }
 
                             // 如果击中实体，造成伤害
                             if (entityHit != null) {
                                 Entity target = entityHit.getEntity();
-                                target.hurt(mount.level().damageSources().mobAttack(mount), 15.0f / pelletCount);  // 每个弹丸的伤害平分
+                                target.hurt(mount.level().damageSources().mobAttack(mount), 15.0f);  // 每个弹丸的伤��平分
                             }
                         }
                     }
@@ -286,77 +298,77 @@ public record MountAttackPacket(boolean isRightClick) implements CustomPacketPay
                         if (!data.isRightClick()) {  // 左键瞬移
                             Vec3 start = mount.position();
                             Vec3 end = start.add(viewVec.multiply(30, 30, 30));
-                            
+
                             // 进行射线碰撞检测
                             BlockHitResult hitResult = mount.level().clip(
-                                new ClipContext(
-                                    start,
-                                    end,
-                                    ClipContext.Block.COLLIDER,
-                                    ClipContext.Fluid.NONE,
-                                    mount
-                                )
+                                    new ClipContext(
+                                            start,
+                                            end,
+                                            ClipContext.Block.COLLIDER,
+                                            ClipContext.Fluid.NONE,
+                                            mount
+                                    )
                             );
-                            
+
                             // 如果碰到方块，就移动到碰撞点前方一格
                             if (hitResult.getType() != BlockHitResult.Type.MISS) {
                                 end = hitResult.getLocation().subtract(viewVec.scale(1.0));
                             }
-                            
+
                             // 保存玩家的相对位置
                             Vec3 playerOffset = serverPlayer.position().subtract(mount.position());
-                            
+
                             // 设置新位置，稍微提高一点以避免卡入地面
                             end = end.add(0, 0.1, 0);
                             mount.setPos(end.x, end.y, end.z);
                             mount.setDeltaMovement(Vec3.ZERO);
                             mount.setNoGravity(true);  // 禁用重力
-                            
+
                             // 确保玩家跟随移动并保持骑乘状态
                             serverPlayer.setPos(end.x + playerOffset.x, end.y + playerOffset.y, end.z + playerOffset.z);
                             serverPlayer.startRiding(mount, true);
-                            
+
                             // 禁用潜影贝的AI
                             shulker.setNoAi(true);
-                            
+
                             // 播放音效和粒子效果
-                            mount.level().playSound(null, 
-                                end.x, end.y, end.z,
-                                SoundEvents.ENDERMAN_TELEPORT, 
-                                SoundSource.NEUTRAL, 
-                                1.0F, 
-                                1.0F
+                            mount.level().playSound(null,
+                                    end.x, end.y, end.z,
+                                    SoundEvents.ENDERMAN_TELEPORT,
+                                    SoundSource.NEUTRAL,
+                                    1.0F,
+                                    1.0F
                             );
-                            
+
                             ((ServerLevel)mount.level()).sendParticles(
-                                ParticleTypes.PORTAL,
-                                start.x, start.y, start.z,
-                                20, 0.5, 0.5, 0.5,
-                                0.0
+                                    ParticleTypes.PORTAL,
+                                    start.x, start.y, start.z,
+                                    20, 0.5, 0.5, 0.5,
+                                    0.0
                             );
-                            
+
                             ((ServerLevel)mount.level()).sendParticles(
-                                ParticleTypes.PORTAL,
-                                end.x, end.y, end.z,
-                                20, 0.5, 0.5, 0.5,
-                                0.0
+                                    ParticleTypes.PORTAL,
+                                    end.x, end.y, end.z,
+                                    20, 0.5, 0.5, 0.5,
+                                    0.0
                             );
                         } else {  // 右键发射潜影贝弹
                             int bulletCount = 8;  // 发射的子弹数量
                             float spreadAngle = 15.0F;  // 扩散角度
-                            
+
                             for (int i = 0; i < bulletCount; i++) {
                                 ShulkerBullet bullet = EntityType.SHULKER_BULLET.create(mount.level());
                                 if (bullet != null) {
                                     // 计算随机偏移角度
                                     float horizontalAngle = (float) (Math.random() * spreadAngle - spreadAngle/2);
                                     float verticalAngle = (float) (Math.random() * spreadAngle - spreadAngle/2);
-                                    
+
                                     // 根据角度旋转向量
                                     Vec3 rotatedVec = viewVec
-                                        .xRot((float) Math.toRadians(verticalAngle))
-                                        .yRot((float) Math.toRadians(horizontalAngle));
-                                    
+                                            .xRot((float) Math.toRadians(verticalAngle))
+                                            .yRot((float) Math.toRadians(horizontalAngle));
+
                                     Vec3 start = mount.getEyePosition();
                                     bullet.setOwner(mount);
                                     bullet.setPos(start.x, start.y, start.z);
@@ -364,15 +376,78 @@ public record MountAttackPacket(boolean isRightClick) implements CustomPacketPay
                                     mount.level().addFreshEntity(bullet);
                                 }
                             }
-                            
+
                             // 播放音效
-                            mount.level().playSound(null, 
-                                mount.getX(), mount.getY(), mount.getZ(),
-                                SoundEvents.SHULKER_SHOOT, 
-                                SoundSource.HOSTILE, 
-                                2.0F, 
-                                (mount.getRandom().nextFloat() - mount.getRandom().nextFloat()) * 0.2F + 1.0F
+                            mount.level().playSound(null,
+                                    mount.getX(), mount.getY(), mount.getZ(),
+                                    SoundEvents.SHULKER_SHOOT,
+                                    SoundSource.HOSTILE,
+                                    2.0F,
+                                    (mount.getRandom().nextFloat() - mount.getRandom().nextFloat()) * 0.2F + 1.0F
                             );
+                        }
+                    }
+                    else if (mount instanceof Warden warden && !data.isRightClick()) {
+                        UUID mountId = mount.getUUID();
+                        long currentTime = System.currentTimeMillis();
+                        Long lastUseTime = wardenSonicBoomCooldowns.get(mountId);
+
+                        if (lastUseTime == null || currentTime - lastUseTime >= WARDEN_SONIC_BOOM_COOLDOWN) {
+                            // 声波攻击
+                            Vec3 start = mount.getEyePosition();
+                            Vec3 end = start.add(viewVec.multiply(20, 20, 20));
+
+                            // 播放声波攻击音效
+                            mount.level().playSound(null, mount.getX(), mount.getY(), mount.getZ(),
+                                    SoundEvents.WARDEN_SONIC_BOOM, SoundSource.HOSTILE, 3.0F, 1.0F);
+
+                            // 检测实体碰撞
+                            AABB boundingBox = new AABB(start.x, start.y, start.z, end.x, end.y, end.z).inflate(2.0);
+                            List<Entity> hitEntities = mount.level().getEntities(mount, boundingBox);
+
+                            // 添加声波粒子效果路径
+                            if (mount.level() instanceof ServerLevel serverLevel) {
+                                double distance = start.distanceTo(end);
+                                Vec3 direction = viewVec.normalize();
+                                for (double d = 0; d < distance; d += 0.5) {
+                                    Vec3 pos = start.add(direction.scale(d));
+                                    serverLevel.sendParticles(ParticleTypes.SONIC_BOOM,
+                                            pos.x, pos.y, pos.z,
+                                            1, 0, 0, 0, 0);
+                                }
+                            }
+
+                            for (Entity target : hitEntities) {
+                                if (target != mount && target != serverPlayer) {
+                                    target.hurt(mount.level().damageSources().sonicBoom(mount), 50.0f);
+                                }
+                            }
+
+                            // 更新冷却时间并开始播放音效计时
+                            wardenSonicBoomCooldowns.put(mountId, currentTime);
+
+                            // 启动一个新线程来处理冷却音效
+                            new Thread(() -> {
+                                try {
+                                    long startTime = System.currentTimeMillis();
+                                    while (System.currentTimeMillis() - startTime < WARDEN_SONIC_BOOM_COOLDOWN) {
+                                        long elapsed = System.currentTimeMillis() - startTime;
+                                        float pitch = 0.5f + ((float)elapsed / WARDEN_SONIC_BOOM_COOLDOWN);
+
+                                        mount.level().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
+                                                SoundEvents.NOTE_BLOCK_PLING, SoundSource.NEUTRAL, 0.5F, pitch);
+
+                                        Thread.sleep(500); // 每0.5秒播放一次音效
+                                    }
+
+                                    // 冷却完毕播放升级音效
+                                    mount.level().playSound(null, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
+                                            SoundEvents.PLAYER_LEVELUP, SoundSource.NEUTRAL, 1.0F, 1.0F);
+
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }).start();
                         }
                     }
                 }

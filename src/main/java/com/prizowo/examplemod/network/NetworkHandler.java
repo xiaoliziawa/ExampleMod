@@ -42,5 +42,11 @@ public class NetworkHandler {
             MountAttackPacket.STREAM_CODEC,
             MountAttackPacket::handle
         );
+
+        registrar.playToServer(
+            ToggleThrowPacket.TYPE,
+            ToggleThrowPacket.STREAM_CODEC,
+            ToggleThrowPacket::handle
+        );
     }
 }

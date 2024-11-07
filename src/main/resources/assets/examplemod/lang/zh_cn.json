@@ -10,5 +10,8 @@
   "key.categories.examplemod": "示例模组",
   "key.examplemod.mount": "骑乘",
   "key.examplemod.descend": "下降",
-  "key.examplemod.toggle_overlay": "切换显示覆盖层"
+  "key.examplemod.toggle_overlay": "切换显示覆盖层",
+  "key.examplemod.toggle_throw": "切换物品投掷",
+  "message.examplemod.throw_enabled": "§a物品投掷已启用",
+  "message.examplemod.throw_disabled": "§c物品投掷已禁用"
 }

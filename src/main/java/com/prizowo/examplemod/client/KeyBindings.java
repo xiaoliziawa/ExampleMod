@@ -29,4 +29,12 @@ public class KeyBindings {
         GLFW.GLFW_KEY_P,
         "key.categories.examplemod"
     );
+
+    public static final KeyMapping TOGGLE_THROW = new KeyMapping(
+        "key.examplemod.toggle_throw",
+        KeyConflictContext.IN_GAME,
+        InputConstants.Type.KEYSYM,
+        GLFW.GLFW_KEY_B,
+        "key.categories.examplemod"
+    );
 } 
