@@ -19,6 +19,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class ThrownItemEntity extends ThrowableItemProjectile {
@@ -40,7 +42,7 @@ public class ThrownItemEntity extends ThrowableItemProjectile {
     
     public ThrownItemEntity(Level level, LivingEntity shooter, ItemStack itemStack) {
         this(level, shooter);
-        this.thrownStack = itemStack.split(1); // 只取一个物品
+        this.thrownStack = itemStack.split(1);
         this.setItem(this.thrownStack);
     }
 
@@ -72,31 +74,30 @@ public class ThrownItemEntity extends ThrowableItemProjectile {
     public void tick() {
         if (isStuck()) {
             if (stuckPos != null) {
-                // 检查方块是否还存在
-                if (level().getBlockState(stuckPos).isAir()) {
-                    // 如果方块被破坏，掉落物品
-                    if (!this.level().isClientSide) {
-                        this.spawnAtLocation(this.thrownStack);
-                    }
-                    this.discard();
+                BlockState state = level().getBlockState(stuckPos);
+                if (state.isAir()) {
+                    this.entityData.set(STUCK, false);
+                    stuckPos = null;
                 } else {
-                    // 保持在击中位置
                     if (hitLocation != null) {
                         this.setPos(hitLocation.x, hitLocation.y, hitLocation.z);
                     }
-                    this.setDeltaMovement(Vec3.ZERO);
                 }
             }
         } else {
+            Vec3 movement = this.getDeltaMovement();
+            
+            if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-7) {
+                this.setYRot((float)(Mth.atan2(movement.x, movement.z) * (180F / Math.PI)));
+            }
+            
             super.tick();
         }
     }
 
-    // 添加玩家触碰时的处理
     @Override
     public void playerTouch(Player player) {
         if (!this.level().isClientSide && isStuck()) {
-            // 如果物品卡在方块上且玩家触碰，掉落物品
             this.spawnAtLocation(this.thrownStack);
             this.discard();
         }
@@ -108,18 +109,22 @@ public class ThrownItemEntity extends ThrowableItemProjectile {
         this.entityData.set(STUCK, true);
         this.entityData.set(STUCK_FACE, face.ordinal());
         
-        // 立即设置到击中位置
-        this.hitLocation = hitResult.getLocation();
-        this.setPos(hitLocation.x, hitLocation.y, hitLocation.z);
+        Vec3 hitLocation = hitResult.getLocation();
         
-        // 保存击中时的旋转角度
+        double offset = 0.01;
+        double x = hitLocation.x + face.getStepX() * offset;
+        double y = hitLocation.y + face.getStepY() * offset;
+        double z = hitLocation.z + face.getStepZ() * offset;
+        
+        this.hitLocation = new Vec3(x, y, z);
+        this.setPos(x, y, z);
+        
         Vec3 movement = this.getDeltaMovement();
-        this.yRotOnHit = (float)(Math.atan2(movement.x, movement.z) * (180F / Math.PI));
+        this.yRotOnHit = (float)(Mth.atan2(movement.x, movement.z) * (180F / Math.PI));
         
-        // 完全停止移动
         this.setDeltaMovement(Vec3.ZERO);
+        this.setNoGravity(true);
         
-        // 播放插入音效
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
                 SoundEvents.ANVIL_HIT, SoundSource.PLAYERS,
                 1.0F, 1.0F);
@@ -128,6 +133,12 @@ public class ThrownItemEntity extends ThrowableItemProjectile {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         if (!this.level().isClientSide && !isStuck()) {
+            // 保存击中时的朝向
+            double dx = this.getDeltaMovement().x;
+            double dz = this.getDeltaMovement().z;
+            float hitYaw = (float) (Math.atan2(dx, dz) * (180F / Math.PI));
+            this.setYRotOnHit(hitYaw);
+            
             setStuck(result.getBlockPos(), result.getDirection(), result);
         }
     }
@@ -138,15 +149,12 @@ public class ThrownItemEntity extends ThrowableItemProjectile {
             // 基础伤害为2
             float damage = 2.0F;
             
-            // 根据物品的材质增加伤害
             if (thrownStack.isDamageableItem()) {
-                // 如果物品有耐久度,则根据最大耐久度来计算额外伤害
                 damage += thrownStack.getMaxDamage() / 32.0F;
             }
             
             result.getEntity().hurt(this.damageSources().thrown(this, this.getOwner()), damage);
             
-            // 掉落物品
             this.spawnAtLocation(this.thrownStack);
             this.discard();
         }
@@ -155,5 +163,9 @@ public class ThrownItemEntity extends ThrowableItemProjectile {
     @Override
     public ItemStack getItem() {
         return !this.thrownStack.isEmpty() ? this.thrownStack : super.getItem();
+    }
+
+    public void setYRotOnHit(float yRot) {
+        this.yRotOnHit = yRot;
     }
 } 

@@ -15,7 +15,9 @@ import com.prizowo.examplemod.entity.ThrownItemEntity;
 import com.prizowo.examplemod.items.ExplosiveArrow;
 import com.prizowo.examplemod.items.HomingArrow;
 import com.prizowo.examplemod.entity.SlimeProjectile;
-import java.util.Objects;
+import com.prizowo.examplemod.custom.customentity.CustomBeeEntity;
+import com.prizowo.examplemod.entity.HoneyBombEntity;
+import com.prizowo.examplemod.entity.SuperFireworkEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -38,14 +40,14 @@ public class EntityReg {
         () -> Builder.<CustomEgg>of(CustomEgg::new, MobCategory.MISC)
             .sized(0.25F, 0.25F)
             .clientTrackingRange(4)
-            .updateInterval(10)
+            .updateInterval(1)
             .build(ResourceLocation.tryBuild("examplemod", "custom_egg").toString()));
 
     public static final DeferredHolder<EntityType<?>, EntityType<CustomSnowball>> CUSTOM_SNOWBALL = ENTITIES.register("custom_snowball",
         () -> Builder.<CustomSnowball>of(CustomSnowball::new, MobCategory.MISC)
             .sized(0.25F, 0.25F)
             .clientTrackingRange(4)
-            .updateInterval(10)
+            .updateInterval(1)
             .build(ResourceLocation.tryBuild("examplemod", "custom_snowball").toString()));
 
     public static final DeferredHolder<EntityType<?>, EntityType<CustomSnowGolem>> CUSTOM_SNOW_GOLEM = ENTITIES.register("custom_snow_golem",
@@ -58,21 +60,21 @@ public class EntityReg {
         () -> Builder.<HomingArrow>of((type, level) -> new HomingArrow((EntityType<? extends HomingArrow>) type, level), MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .clientTrackingRange(4)
-            .updateInterval(20)
+            .updateInterval(1)
             .build(ResourceLocation.tryBuild("examplemod", "homing_arrow").toString()));
 
     public static final DeferredHolder<EntityType<?>, EntityType<ExplosiveArrow>> EXPLOSIVE_ARROW = ENTITIES.register("explosive_arrow",
         () -> EntityType.Builder.<ExplosiveArrow>of(ExplosiveArrow::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .clientTrackingRange(4)
-            .updateInterval(20)
+            .updateInterval(1)
             .build("explosive_arrow"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<SlimeProjectile>> SLIME_PROJECTILE = ENTITIES.register("slime_projectile",
         () -> EntityType.Builder.<SlimeProjectile>of(SlimeProjectile::new, MobCategory.MISC)
             .sized(1.0F, 1.0F)
             .clientTrackingRange(4)
-            .updateInterval(10)
+            .updateInterval(1)
             .build("slime_projectile")
     );
 
@@ -80,15 +82,41 @@ public class EntityReg {
         () -> EntityType.Builder.<ThrownAxeEntity>of(ThrownAxeEntity::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .clientTrackingRange(4)
-            .updateInterval(20)
+            .updateInterval(1)
             .build("thrown_axe"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<ThrownItemEntity>> THROWN_ITEM = ENTITIES.register("thrown_item",
             () -> EntityType.Builder.<ThrownItemEntity>of(ThrownItemEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(4)
-                    .updateInterval(10)
+                    .updateInterval(1)
                     .build("thrown_item"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<CustomBeeEntity>> CUSTOM_BEE = 
+        ENTITIES.register("custom_bee", () ->
+            EntityType.Builder.of(CustomBeeEntity::new, MobCategory.CREATURE)
+                .sized(0.7F, 0.6F)  // 基础碰撞箱大小
+                .clientTrackingRange(8)
+                .build("custom_bee"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<HoneyBombEntity>> HONEY_BOMB = 
+        ENTITIES.register("honey_bomb", () ->
+            EntityType.Builder.<HoneyBombEntity>of(HoneyBombEntity::new, MobCategory.MISC)
+                .sized(0.5F, 0.5F)
+                .clientTrackingRange(4)
+                .updateInterval(1)
+                .build("honey_bomb")
+        );
+
+    public static final DeferredHolder<EntityType<?>, EntityType<SuperFireworkEntity>> SUPER_FIREWORK = 
+        ENTITIES.register("super_firework", () ->
+            EntityType.Builder.<SuperFireworkEntity>of(SuperFireworkEntity::new, MobCategory.MISC)
+                .sized(0.25F, 0.25F)
+                .clientTrackingRange(4)
+                .updateInterval(10)
+                .build("super_firework")
+        );
+
     public EntityReg(IEventBus eventBus) {
         ENTITIES.register(eventBus);
     }

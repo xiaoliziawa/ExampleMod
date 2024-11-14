@@ -25,6 +25,13 @@ public class ModComponents {
                 .persistent(Codec.INT)
                 .build());
 
+    // 烟花飞行时间组件
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> FIREWORK_FLIGHT = 
+        COMPONENTS.register("firework_flight", 
+            () -> DataComponentType.<Integer>builder()
+                .persistent(Codec.INT)
+                .build());
+
     public static void register(IEventBus bus) {
         COMPONENTS.register(bus);
     }

@@ -12,7 +12,27 @@ public class NetworkHandler {
     public static void register(RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar(Examplemod.MODID)
             .versioned("1.0.0");
-        
+
+        // 添加新的数据包注册 - 从服务端到客户端的包
+        registrar.playToClient(
+            MagicProjectilePacket.TYPE,
+            MagicProjectilePacket.STREAM_CODEC,
+            MagicProjectilePacket::handle
+        );
+
+        registrar.playToClient(
+            MagicCirclePacket.TYPE,
+            MagicCirclePacket.STREAM_CODEC,
+            MagicCirclePacket::handle
+        );
+
+        registrar.playToClient(
+            SonicBoomPacket.TYPE,
+            SonicBoomPacket.STREAM_CODEC,
+            SonicBoomPacket::handle
+        );
+
+        // 原有的数据包注册
         registrar.playToServer(
             HammerRangePacket.TYPE, 
             HammerRangePacket.STREAM_CODEC, 
@@ -47,6 +67,25 @@ public class NetworkHandler {
             ToggleThrowPacket.TYPE,
             ToggleThrowPacket.STREAM_CODEC,
             ToggleThrowPacket::handle
+        );
+
+        registrar.playToServer(
+            ProjectileHitPacket.TYPE,
+            ProjectileHitPacket.STREAM_CODEC,
+            ProjectileHitPacket::handle
+        );
+
+        // 添加这两个包的注册
+        registrar.playToServer(
+            PlayerMountPacket.TYPE,
+            PlayerMountPacket.STREAM_CODEC,
+            PlayerMountPacket::handle
+        );
+
+        registrar.playToClient(
+            PlayerMountConfirmPacket.TYPE,
+            PlayerMountConfirmPacket.STREAM_CODEC,
+            PlayerMountConfirmPacket::handle
         );
     }
 }

@@ -2,15 +2,15 @@ package com.prizowo.examplemod;
 
 import com.prizowo.examplemod.Reg.*;
 import com.prizowo.examplemod.Reg.music.JukeboxSongsReg;
-import com.prizowo.examplemod.client.renderer.ThrownAxeRenderer;
 import com.prizowo.examplemod.component.ModComponents;
 import com.prizowo.examplemod.custom.CustomEgg;
 import com.prizowo.examplemod.custom.customentity.CustomSnowGolem;
 import com.prizowo.examplemod.custom.customentity.MyCustomEntity;
+import com.prizowo.examplemod.custom.customentity.CustomBeeEntity;
 import com.prizowo.examplemod.enchant.TFEnchantmentEffects;
 import com.prizowo.examplemod.enchant.TFMobEffects;
 import com.prizowo.examplemod.init.LightningStaff;
-import com.prizowo.examplemod.network.NetworkHandler;
+import com.prizowo.examplemod.network.*;
 import com.prizowo.examplemod.render.EntityOutlineRenderer;
 import com.prizowo.examplemod.render.EntityOverlayRenderer;
 import com.prizowo.examplemod.util.HeadManager;
@@ -35,7 +35,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -92,17 +91,20 @@ public class Examplemod {
         modEventBus.register(NetworkHandler.class);
         ModComponents.register(modEventBus);
 
+
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(this::registerKeyBinds);
-            modEventBus.addListener(this::registerRenderers);
             NeoForge.EVENT_BUS.register(MountMovementEvents.class);
             NeoForge.EVENT_BUS.register(MountAttackEvents.class);
         }
+
+
     }
 
     private void addEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(EntityReg.MY_HUMANOID.get(), MyCustomEntity.createAttributes().build());
         event.put(EntityReg.CUSTOM_SNOW_GOLEM.get(), CustomSnowGolem.createAttributes().build());
+        event.put(EntityReg.CUSTOM_BEE.get(), CustomBeeEntity.createAttributes().build());
     }
 
     public static ResourceLocation prefix(String name) {
@@ -204,10 +206,4 @@ public class Examplemod {
         event.register(KeyBindings.DESCEND_KEY);
         event.register(KeyBindings.TOGGLE_OVERLAY);
     }
-
-    @OnlyIn(Dist.CLIENT)
-    private void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(EntityReg.THROWN_AXE.get(), ThrownAxeRenderer::new);
-    }
-
 }

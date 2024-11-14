@@ -9,5 +9,8 @@
   "entity.examplemod.slime_projectile": "Slime Block",
   "key.examplemod.toggle_throw": "Toggle Item Throwing",
   "message.examplemod.throw_enabled": "§aItem throwing enabled",
-  "message.examplemod.throw_disabled": "§cItem throwing disabled"
+  "message.examplemod.throw_disabled": "§cItem throwing disabled",
+  "item.examplemod.sonic_bow": "Sonic Bow",
+  "item.examplemod.super_firework": "Super Firework",
+  "mixin.example.join_world": "Join Latest World"
 }

@@ -7,6 +7,8 @@
   "mixins": [
     "EnderpearlItemMixin",
     "ItemThrowMixin",
+    "ArmorItemThrowMixin",
+    "SpawnEggItemThrowMixin",
     "MaceMixin",
     "MixinRedstoneLampBlock",
     "PistonBaseBlockMixin",
@@ -34,7 +36,7 @@
   "client": [
     "PlayerModelMixin",
     "PlayerRendererMixin",
-    "gui.GuiGraphicsMixin",
+    "gui.TitleScreenMixin",
     "maxstack.GuiGraphicsMixin"
   ],
   "injectors": {

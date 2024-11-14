@@ -28,17 +28,14 @@ public class ThrownAxeRenderer extends EntityRenderer<ThrownAxeEntity> {
         poseStack.pushPose();
         
         if (entity.isStuck()) {
-            // 箭矢式插入效果
             poseStack.translate(0.0D, 0.0D, 0.0D);
             
-            // 使用保存的旋转角度
             poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRotOnHit()));
             
-            // 根据插入面调整角度
             switch(entity.getStuckFace()) {
                 case UP -> {
                     poseStack.translate(0, 0.1, 0);
-                    poseStack.mulPose(Axis.XP.rotationDegrees(90)); // 平躺在地上
+                    poseStack.mulPose(Axis.XP.rotationDegrees(90));
                 }
                 case DOWN -> {
                     poseStack.translate(0, -0.1, 0);
@@ -61,23 +58,17 @@ public class ThrownAxeRenderer extends EntityRenderer<ThrownAxeEntity> {
                 }
             }
         } else {
-            // 飞行中的渲染
-            // 首先让斧头朝向飞行方向
             poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot()));
             
-            // 让斧头平放
             poseStack.mulPose(Axis.XP.rotationDegrees(90));
             
-            // 平面旋转动画
-            float spinSpeed = 60.0F; // 增加旋转速度
+            float spinSpeed = 60.0F;
             float rotation = (entity.tickCount + partialTicks) * spinSpeed;
             poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
         }
         
-        // 调整斧头大小
         poseStack.scale(2.0F, 2.0F, 2.0F);
         
-        // 渲染物品
         itemRenderer.renderStatic(entity.getItem(),
                 ItemDisplayContext.FIXED,
                 packedLight,

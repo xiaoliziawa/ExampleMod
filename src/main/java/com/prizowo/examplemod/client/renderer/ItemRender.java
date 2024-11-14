@@ -29,20 +29,16 @@ public class ItemRender extends EntityRenderer<ThrownItemEntity> {
                        @NotNull MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         
-        // 计算实体位置的光照等级
         BlockPos blockpos = BlockPos.containing(entity.getX(), entity.getY(), entity.getZ());
         int blockLight = entity.level().getBrightness(LightLayer.BLOCK, blockpos);
         int skyLight = entity.level().getBrightness(LightLayer.SKY, blockpos);
-        int combinedLight = LightTexture.pack(Math.max(blockLight, 14), skyLight); // 增加最小光照到14
+        int combinedLight = LightTexture.pack(Math.max(blockLight, 14), skyLight);
         
         if (entity.isStuck()) {
-            // 箭矢式插入效果
             poseStack.translate(0.0D, 0.0D, 0.0D);
             
-            // 使用保存的旋转角度
             poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRotOnHit()));
             
-            // 根据插入面调整角度
             switch(entity.getStuckFace()) {
                 case UP -> {
                     poseStack.translate(0, 0.1, 0);
@@ -69,24 +65,17 @@ public class ItemRender extends EntityRenderer<ThrownItemEntity> {
                 }
             }
         } else {
-            // 飞行中的渲染
-            // 首先应用Y轴旋转以面向正确的方向
-            poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot() + 180.0F));
+            poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot()));
             
-            // 然后应用X轴旋转使物品平躺
             poseStack.mulPose(Axis.XP.rotationDegrees(90));
             
-            // 最后应用旋转动画
             float spinSpeed = 60.0F;
             float rotation = (entity.tickCount + partialTicks) * spinSpeed;
             poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
         }
         
-        // 调整物品大小
-        float scale = 0.8F; // 增大物品尺寸到0.8
-        poseStack.scale(scale, scale, scale);
+        poseStack.scale(1.0F, 1.0F, 1.0F);
         
-        // 渲染物品，使用计算出的光照值
         itemRenderer.renderStatic(entity.getItem(),
                 ItemDisplayContext.FIXED,
                 combinedLight,

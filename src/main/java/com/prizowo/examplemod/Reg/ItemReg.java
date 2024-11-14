@@ -7,6 +7,7 @@ import com.prizowo.examplemod.items.ExplosiveBow;
 import com.prizowo.examplemod.items.HomingBow;
 import com.prizowo.examplemod.items.MultiShotBow;
 import com.prizowo.examplemod.items.HammerItem;
+import com.prizowo.examplemod.items.SonicBow;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
@@ -24,6 +25,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 import net.minecraft.world.item.Tiers;
+import com.prizowo.examplemod.custom.CustomBeeSpawnEggItem;
+import com.prizowo.examplemod.items.SuperFireworkItem;
 
 public class ItemReg {
     public static final DeferredRegister<Item> ITEMS;
@@ -39,6 +42,9 @@ public class ItemReg {
     public static final Supplier<Item> HOMING_BOW;
     public static final Supplier<Item> EXPLOSIVE_BOW;
     public static final Supplier<Item> DIAMOND_HAMMER;
+    public static final Supplier<Item> SONIC_BOW;
+    public static final Supplier<Item> CUSTOM_BEE_SPAWN_EGG;
+    public static final Supplier<Item> SUPER_FIREWORK;
 
     public ItemReg() {
     }
@@ -103,5 +109,14 @@ public class ItemReg {
         DIAMOND_HAMMER = ITEMS.register("diamond_hammer", () -> 
             new HammerItem(Tiers.DIAMOND, 5.0F, -3.0F, 
                 new Item.Properties().durability(1561)));
+        SONIC_BOW = ITEMS.register("sonic_bow", () -> {
+            return new SonicBow((new Item.Properties()).durability(384));
+        });
+        CUSTOM_BEE_SPAWN_EGG = ITEMS.register("custom_bee_spawn_egg", 
+            () -> new CustomBeeSpawnEggItem(0xFDCB4B, 0x948141,
+                new Item.Properties()));
+        SUPER_FIREWORK = ITEMS.register("super_firework", () ->
+            new SuperFireworkItem(new Item.Properties().stacksTo(64))
+        );
     }
 }

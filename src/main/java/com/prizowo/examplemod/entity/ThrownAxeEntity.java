@@ -70,13 +70,11 @@ public class ThrownAxeEntity extends ThrowableItemProjectile {
     public void tick() {
         if (isStuck()) {
             if (stuckPos != null) {
-                // 检查方块是否还存在
                 BlockState state = level().getBlockState(stuckPos);
                 if (state.isAir()) {
                     this.entityData.set(STUCK, false);
                     stuckPos = null;
                 } else {
-                    // 保持在击中位置
                     if (hitLocation != null) {
                         this.setPos(hitLocation.x, hitLocation.y, hitLocation.z);
                     }
@@ -85,22 +83,19 @@ public class ThrownAxeEntity extends ThrowableItemProjectile {
         } else {
             Vec3 movement = this.getDeltaMovement();
             
-            // 添加重力效果，但比普通重力小
             double gravity = -0.03D;
             
-            // 保持一定的水平速度，但随时间略微减少
             double horizontalDrag = 0.99;
             double verticalDrag = 0.98;
             
             this.setDeltaMovement(
                 movement.x * horizontalDrag,
-                Math.max(movement.y * verticalDrag + gravity, -0.8), // 限制最大下落速度
+                Math.max(movement.y * verticalDrag + gravity, -0.8),
                 movement.z * horizontalDrag
             );
             
             super.tick();
             
-            // 更新实体的旋转，使其朝向移动方向
             if (this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-7) {
                 this.setYRot((float)(Mth.atan2(movement.x, movement.z) * (180F / Math.PI)));
             }
@@ -113,18 +108,14 @@ public class ThrownAxeEntity extends ThrowableItemProjectile {
         this.entityData.set(STUCK, true);
         this.entityData.set(STUCK_FACE, face.ordinal());
         
-        // 立即设置到击中位置
         this.hitLocation = hitResult.getLocation();
         this.setPos(hitLocation.x, hitLocation.y, hitLocation.z);
         
-        // 保存击中时的旋转角度
         Vec3 movement = this.getDeltaMovement();
         this.yRotOnHit = (float)(Math.atan2(movement.x, movement.z) * (180F / Math.PI));
         
-        // 完全停止移动
         this.setDeltaMovement(Vec3.ZERO);
         
-        // 播放插入音效
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
                 SoundEvents.ARROW_HIT, SoundSource.PLAYERS,
                 1.0F, 1.0F);

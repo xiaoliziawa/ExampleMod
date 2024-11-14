@@ -13,5 +13,10 @@
   "key.examplemod.toggle_overlay": "切换显示覆盖层",
   "key.examplemod.toggle_throw": "切换物品投掷",
   "message.examplemod.throw_enabled": "§a物品投掷已启用",
-  "message.examplemod.throw_disabled": "§c物品投掷已禁用"
+  "message.examplemod.throw_disabled": "§c物品投掷已禁用",
+  "item.examplemod.sonic_bow": "Plz！",
+  "item.examplemod.custom_bee_spawn_egg": "Bee!",
+  "entity.examplemod.custom_bee": "Beeeeeeeeeeeee",
+  "item.examplemod.super_firework": "烟花",
+  "mixin.example.join_world": "快速加入"
 }
