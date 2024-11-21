@@ -1,0 +1,22 @@
+{
+  "itemGroup.examplemod.creative": "示例模组",
+  "block.examplemod.customblock": "自定义方块",
+  "item.examplemod.customblock2": "自定义方块2",
+  "item.examplemod.music_card": "音乐卡片",
+  "item.examplemod.music_card.desc": "春日影",
+  "jukebox_song.examplemod.custom_song": "春日影",
+  "item.examplemod.diamond_hammer": "钻石锤",
+  "entity.examplemod.slime_projectile": "史莱姆方块",
+  "key.categories.examplemod": "示例模组",
+  "key.examplemod.mount": "骑乘",
+  "key.examplemod.descend": "下降",
+  "key.examplemod.toggle_overlay": "切换显示覆盖层",
+  "key.examplemod.toggle_throw": "切换物品投掷",
+  "message.examplemod.throw_enabled": "§a物品投掷已启用",
+  "message.examplemod.throw_disabled": "§c物品投掷已禁用",
+  "item.examplemod.sonic_bow": "Plz！",
+  "item.examplemod.custom_bee_spawn_egg": "Bee!",
+  "entity.examplemod.custom_bee": "Beeeeeeeeeeeee",
+  "item.examplemod.super_firework": "烟花",
+  "mixin.example.join_world": "快速加入"
+}

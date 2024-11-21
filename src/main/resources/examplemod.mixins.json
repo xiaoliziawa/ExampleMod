@@ -1,0 +1,45 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.prizowo.examplemod.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "examplemod.refmap.json",
+  "mixins": [
+    "EnderpearlItemMixin",
+    "ItemThrowMixin",
+    "ArmorItemThrowMixin",
+    "SpawnEggItemThrowMixin",
+    "MaceMixin",
+    "MixinRedstoneLampBlock",
+    "PistonBaseBlockMixin",
+    "PistonMovingBlockEntityMixin",
+    "PlayerThornsEffectMixin",
+    "SnowballItemMixin",
+    "TridentItemMixin",
+    "WindChargeItemMixin",
+    "entities.ArrowHitMixin",
+    "entities.EnderManMixin",
+    "entities.EntityMixin",
+    "entities.IronGolemMixin",
+    "entities.LivingEntityMixin",
+    "entities.PlayerAttackMixin",
+    "entities.PlayerMixin",
+    "entities.TridentEntityMixin",
+    "entities.WindChargeMixin",
+    "entities.ZombieMixin",
+    "items.BowItemMixin",
+    "maxstack.ContainerMixin",
+    "maxstack.DataComponentsMixin",
+    "maxstack.ItemMixin2",
+    "maxstack.ItemStackMixin"
+  ],
+  "client": [
+    "PlayerModelMixin",
+    "PlayerRendererMixin",
+    "gui.TitleScreenMixin",
+    "maxstack.GuiGraphicsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "comparator_output": 15,
+  "description": {
+    "translate": "jukebox_song.examplemod.custom_song"
+  },
+  "length_in_seconds": 180.0,
+  "sound_event": "examplemod:music_disc.custom_song"
+}
