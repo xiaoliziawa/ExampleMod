@@ -25,14 +25,22 @@ public class DataGenerators {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         ExistingFileHelper helper = event.getExistingFileHelper();
-        DatapackBuiltinEntriesProvider datapackProvider = new RegistryDataGenerator(output, event.getLookupProvider());
-        CompletableFuture<HolderLookup.Provider> lookupProvider = datapackProvider.getRegistryProvider();
-        generator.addProvider(event.includeServer(), new LootTableProvider(output, Collections.emptySet(),
-                List.of(new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
-        generator.addProvider(event.includeClient(), new ModBlockStateProvider(output, helper));
-        generator.addProvider(event.includeClient(), new ModItemModelProvider(output, helper));
-        generator.addProvider(event.includeServer(),new RegistryDataGenerator(output, lookupProvider));
-    }
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
+        // 方块Tag
+        ModBlockTagProvider blockTagProvider = new ModBlockTagProvider(output, lookupProvider, helper);
+        generator.addProvider(event.includeServer(), blockTagProvider);
+        
+        // 物品Tag
+        generator.addProvider(event.includeServer(), 
+            new ModItemTagProvider(output, lookupProvider, blockTagProvider.contentsGetter(), helper));
+
+        // 其他提供者
+//        generator.addProvider(event.includeServer(), new LootTableProvider(output, Collections.emptySet(),
+//                List.of(new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
+//        generator.addProvider(event.includeClient(), new ModBlockStateProvider(output, helper));
+//        generator.addProvider(event.includeClient(), new ModItemModelProvider(output, helper));
+//        generator.addProvider(event.includeServer(), new RegistryDataGenerator(output, lookupProvider));
+    }
 }
 
